@@ -74,10 +74,10 @@ export function DashboardPage() {
         {/* Header do Cockpit: Data e Resumo de Ação */}
         <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
           <div className="space-y-1.5">
-            <span className="text-[11px] font-bold uppercase tracking-wider text-violet-400">
+            <span className="text-[11px] font-bold uppercase tracking-wider text-violet-600 dark:text-violet-400">
               {obterDataFormatadaHoje()}
             </span>
-            <h1 className="text-2xl font-extrabold tracking-tight text-white sm:text-3xl">
+            <h1 className="text-2xl font-extrabold tracking-tight text-foreground sm:text-3xl">
               {followups.length} retorno{followups.length === 1 ? "" : "s"} e{" "}
               {novosQuentes.length} empresa{novosQuentes.length === 1 ? "" : "s"} nova{novosQuentes.length === 1 ? "" : "s"}.
             </h1>
@@ -87,7 +87,7 @@ export function DashboardPage() {
             <Button
               variant="outline"
               asChild
-              className="border-white/10 bg-white/[0.03] text-xs font-semibold text-white hover:bg-white/10"
+              className="border-border bg-card text-xs font-semibold text-foreground hover:bg-muted shadow-sm"
             >
               <Link to="/leads">
                 <Building2 className="size-4" />
@@ -112,10 +112,10 @@ export function DashboardPage() {
           {/* Coluna Esquerda (8 colunas): Fila de Hoje & Empresas Novas */}
           <div className="space-y-6 lg:col-span-8">
             {/* Bloco 1: Fila de Hoje (Follow-ups) */}
-            <div className="space-y-3 rounded-2xl border border-white/[0.08] bg-[#12131a] p-5 shadow-xl">
+            <div className="space-y-3 rounded-2xl border border-border bg-card p-5 shadow-sm dark:shadow-xl transition-colors">
               <div className="flex items-center justify-between">
                 <div>
-                  <h3 className="text-sm font-bold text-white tracking-wide">Fila de hoje</h3>
+                  <h3 className="text-sm font-bold text-foreground tracking-wide">Fila de hoje</h3>
                   <p className="text-xs text-muted-foreground mt-0.5">
                     {followups.length > 0
                       ? `${followups.length} retorno(s) pendente(s) de abordagem`
@@ -123,7 +123,7 @@ export function DashboardPage() {
                   </p>
                 </div>
                 {followups.length > 0 && (
-                  <span className="rounded-full bg-amber-400/10 border border-amber-400/20 px-2.5 py-0.5 text-xs font-bold text-amber-300">
+                  <span className="rounded-full bg-amber-500/10 border border-amber-500/20 px-2.5 py-0.5 text-xs font-bold text-amber-600 dark:text-amber-300">
                     {followups.length} ações
                   </span>
                 )}
@@ -133,14 +133,14 @@ export function DashboardPage() {
                 {followups.slice(0, 5).map((tarefa) => (
                   <div
                     key={tarefa.id}
-                    className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 rounded-xl border border-white/[0.06] bg-white/[0.02] p-3.5 transition-colors hover:border-violet-500/30 hover:bg-white/[0.03]"
+                    className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 rounded-xl border border-border/70 bg-muted/30 p-3.5 transition-colors hover:border-violet-500/30 hover:bg-muted/60"
                   >
                     <div className="flex items-start gap-3 min-w-0">
-                      <div className="mt-0.5 flex size-7 shrink-0 items-center justify-center rounded-lg bg-rose-500/10 text-rose-400 border border-rose-500/20">
+                      <div className="mt-0.5 flex size-7 shrink-0 items-center justify-center rounded-lg bg-rose-500/10 text-rose-600 dark:text-rose-400 border border-rose-500/20">
                         <AlertCircle className="size-4" />
                       </div>
                       <div className="min-w-0">
-                        <h4 className="truncate font-semibold text-sm text-white">{tarefa.titulo}</h4>
+                        <h4 className="truncate font-semibold text-sm text-foreground">{tarefa.titulo}</h4>
                         <p className="truncate text-xs text-muted-foreground mt-0.5">
                           Follow-up nº {tarefa.follow_ups_enviados + 1} · {tarefa.proximo_followup}
                         </p>
@@ -170,7 +170,7 @@ export function DashboardPage() {
                         variant="outline"
                         onClick={() => marcarFollowupEnviado.mutate(tarefa)}
                         disabled={marcarFollowupEnviado.isPending}
-                        className="h-8 border-white/10 bg-white/5 text-xs text-muted-foreground hover:text-white"
+                        className="h-8 border-border bg-card/60 text-xs text-muted-foreground hover:text-foreground"
                         title="Marcar retorno como concluído"
                       >
                         <CheckCircle2 className="size-3.5" />
@@ -182,8 +182,8 @@ export function DashboardPage() {
 
                 {followups.length === 0 && (
                   <div className="flex flex-col items-center justify-center py-8 text-center text-xs text-muted-foreground">
-                    <CheckCircle2 className="size-8 text-emerald-400/80 mb-2" />
-                    <p className="font-medium text-white">Tudo em dia!</p>
+                    <CheckCircle2 className="size-8 text-emerald-500 dark:text-emerald-400/80 mb-2" />
+                    <p className="font-semibold text-foreground">Tudo em dia!</p>
                     <p className="mt-1">Você não tem retornos atrasados para hoje.</p>
                   </div>
                 )}
@@ -191,17 +191,17 @@ export function DashboardPage() {
             </div>
 
             {/* Bloco 2: Empresas Novas da Última Busca */}
-            <div className="space-y-3 rounded-2xl border border-white/[0.08] bg-[#12131a] p-5 shadow-xl">
+            <div className="space-y-3 rounded-2xl border border-border bg-card p-5 shadow-sm dark:shadow-xl transition-colors">
               <div className="flex items-center justify-between">
                 <div>
-                  <h3 className="text-sm font-bold text-white tracking-wide">Empresas novas</h3>
+                  <h3 className="text-sm font-bold text-foreground tracking-wide">Empresas novas</h3>
                   <p className="text-xs text-muted-foreground mt-0.5">
                     Da última busca, prontas para primeiro contato
                   </p>
                 </div>
                 <Link
                   to="/leads"
-                  className="text-xs font-semibold text-violet-400 hover:text-violet-300 hover:underline"
+                  className="text-xs font-semibold text-violet-600 dark:text-violet-400 hover:underline"
                 >
                   Ver no CRM ↗
                 </Link>
@@ -211,14 +211,14 @@ export function DashboardPage() {
                 {novosQuentes.slice(0, 6).map((leadQuente) => (
                   <div
                     key={leadQuente.id}
-                    className="flex flex-col justify-between gap-3 rounded-xl border border-white/[0.06] bg-white/[0.02] p-3.5 transition-all hover:border-violet-500/30 hover:bg-white/[0.03]"
+                    className="flex flex-col justify-between gap-3 rounded-xl border border-border/70 bg-muted/30 p-3.5 transition-all hover:border-violet-500/30 hover:bg-muted/60"
                   >
                     <div>
                       <div className="flex items-start justify-between gap-2">
-                        <h4 className="font-semibold text-xs text-white line-clamp-1">
+                        <h4 className="font-semibold text-xs text-foreground line-clamp-1">
                           {leadQuente.titulo}
                         </h4>
-                        <span className="flex items-center gap-0.5 text-[10px] font-bold text-amber-400">
+                        <span className="flex items-center gap-0.5 text-[10px] font-bold text-amber-500">
                           ⭐ {formatarNota(leadQuente.nota)}
                         </span>
                       </div>
@@ -227,23 +227,23 @@ export function DashboardPage() {
                       </p>
 
                       <div className="flex flex-wrap items-center gap-1.5 mt-2.5">
-                        <span className="rounded-md bg-violet-500/15 border border-violet-500/25 px-2 py-0.5 text-[10px] font-semibold text-violet-300">
+                        <span className="rounded-md bg-violet-500/10 border border-violet-500/20 px-2 py-0.5 text-[10px] font-semibold text-violet-600 dark:text-violet-300">
                           Score {leadQuente.score}
                         </span>
                         {leadQuente.site_status === "sem_site" && (
-                          <span className="rounded-md bg-rose-500/15 border border-rose-500/25 px-2 py-0.5 text-[10px] font-semibold text-rose-300">
+                          <span className="rounded-md bg-rose-500/10 border border-rose-500/20 px-2 py-0.5 text-[10px] font-semibold text-rose-600 dark:text-rose-300">
                             Sem site
                           </span>
                         )}
                         {leadQuente.site_status === "site_ruim" && (
-                          <span className="rounded-md bg-amber-500/15 border border-amber-500/25 px-2 py-0.5 text-[10px] font-semibold text-amber-300">
+                          <span className="rounded-md bg-amber-500/10 border border-amber-500/20 px-2 py-0.5 text-[10px] font-semibold text-amber-600 dark:text-amber-300">
                             Site amador
                           </span>
                         )}
                       </div>
                     </div>
 
-                    <div className="flex items-center justify-between border-t border-white/[0.04] pt-2 mt-1">
+                    <div className="flex items-center justify-between border-t border-border/60 pt-2 mt-1">
                       <button
                         type="button"
                         onClick={() =>
@@ -277,7 +277,7 @@ export function DashboardPage() {
                             instagram_url: leadQuente.instagram_url,
                           })
                         }
-                        className="flex items-center gap-1.5 text-xs font-semibold text-emerald-400 hover:text-emerald-300"
+                        className="flex items-center gap-1.5 text-xs font-semibold text-emerald-600 dark:text-emerald-400 hover:text-emerald-500"
                       >
                         <MessageCircle className="size-3.5" />
                         <span>Abordar</span>
@@ -286,7 +286,7 @@ export function DashboardPage() {
                       <button
                         type="button"
                         onClick={() => marcarContatado.mutate(leadQuente.id)}
-                        className="text-[11px] text-muted-foreground hover:text-white transition-colors"
+                        className="text-[11px] text-muted-foreground hover:text-foreground transition-colors"
                       >
                         Marcar contatado
                       </button>
@@ -306,25 +306,25 @@ export function DashboardPage() {
           {/* Coluna Direita (4 colunas): Status do Banco & Sua Semana */}
           <div className="space-y-6 lg:col-span-4">
             {/* Card Saldo da Máquina Local */}
-            <div className="space-y-4 rounded-2xl border border-white/[0.08] bg-[#12131a] p-5 shadow-xl">
+            <div className="space-y-4 rounded-2xl border border-border bg-card p-5 shadow-sm dark:shadow-xl transition-colors">
               <div className="flex items-center justify-between">
                 <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
                   Base de Leads
                 </span>
-                <span className="rounded-full bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 text-[10px] font-bold text-emerald-400">
+                <span className="rounded-full bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 text-[10px] font-bold text-emerald-600 dark:text-emerald-400">
                   Ilimitado Local
                 </span>
               </div>
 
               <div>
                 <div className="flex items-baseline gap-2">
-                  <span className="text-3xl font-extrabold text-white tracking-tight">
+                  <span className="text-3xl font-extrabold text-foreground tracking-tight">
                     {totalLeads}
                   </span>
                   <span className="text-xs text-muted-foreground font-medium">empresas no CRM</span>
                 </div>
 
-                <div className="mt-3 h-2 w-full overflow-hidden rounded-full bg-white/5">
+                <div className="mt-3 h-2 w-full overflow-hidden rounded-full bg-muted">
                   <div
                     className="h-full rounded-full bg-gradient-to-r from-violet-500 to-purple-400"
                     style={{ width: `${Math.min(100, Math.max(10, (totalLeads / 500) * 100))}%` }}
@@ -338,7 +338,7 @@ export function DashboardPage() {
             </div>
 
             {/* Card Sua Semana (Funil de Vendas Limpo) */}
-            <div className="space-y-4 rounded-2xl border border-white/[0.08] bg-[#12131a] p-5 shadow-xl">
+            <div className="space-y-4 rounded-2xl border border-border bg-card p-5 shadow-sm dark:shadow-xl transition-colors">
               <div>
                 <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
                   Sua Semana
@@ -347,31 +347,31 @@ export function DashboardPage() {
               </div>
 
               <div className="grid grid-cols-4 gap-2 text-center">
-                <div className="rounded-xl border border-white/[0.04] bg-white/[0.02] p-2.5">
-                  <span className="text-lg font-extrabold text-white">{contatadosQtd}</span>
+                <div className="rounded-xl border border-border/70 bg-muted/40 p-2.5">
+                  <span className="text-lg font-extrabold text-foreground">{contatadosQtd}</span>
                   <p className="text-[10px] text-muted-foreground mt-1 truncate">Contatadas</p>
                 </div>
-                <div className="rounded-xl border border-white/[0.04] bg-white/[0.02] p-2.5">
-                  <span className="text-lg font-extrabold text-violet-400">{responderamQtd}</span>
+                <div className="rounded-xl border border-border/70 bg-muted/40 p-2.5">
+                  <span className="text-lg font-extrabold text-violet-600 dark:text-violet-400">{responderamQtd}</span>
                   <p className="text-[10px] text-muted-foreground mt-1 truncate">Avançaram</p>
                 </div>
-                <div className="rounded-xl border border-white/[0.04] bg-white/[0.02] p-2.5">
-                  <span className="text-lg font-extrabold text-amber-400">
+                <div className="rounded-xl border border-border/70 bg-muted/40 p-2.5">
+                  <span className="text-lg font-extrabold text-amber-600 dark:text-amber-400">
                     {Math.round(responderamQtd * 0.4)}
                   </span>
                   <p className="text-[10px] text-muted-foreground mt-1 truncate">Reuniões</p>
                 </div>
-                <div className="rounded-xl border border-white/[0.04] bg-white/[0.02] p-2.5">
-                  <span className="text-lg font-extrabold text-emerald-400">{fechadasQtd}</span>
+                <div className="rounded-xl border border-border/70 bg-muted/40 p-2.5">
+                  <span className="text-lg font-extrabold text-emerald-600 dark:text-emerald-400">{fechadasQtd}</span>
                   <p className="text-[10px] text-muted-foreground mt-1 truncate">Fechadas</p>
                 </div>
               </div>
             </div>
 
             {/* Banner Rápido: Modo Foco */}
-            <div className="relative overflow-hidden rounded-2xl border border-violet-500/30 bg-gradient-to-br from-violet-950/40 via-[#13141f] to-purple-950/20 p-5 shadow-xl">
-              <div className="flex items-center gap-2 text-xs font-bold text-violet-300">
-                <Sparkles className="size-4 text-violet-400" />
+            <div className="relative overflow-hidden rounded-2xl border border-violet-500/30 bg-gradient-to-br from-violet-500/10 via-card to-purple-500/5 dark:from-violet-950/40 dark:via-[#13141f] dark:to-purple-950/20 p-5 shadow-sm dark:shadow-xl transition-colors">
+              <div className="flex items-center gap-2 text-xs font-bold text-violet-700 dark:text-violet-300">
+                <Sparkles className="size-4 text-violet-600 dark:text-violet-400" />
                 <span>Modo Foco Ativo</span>
               </div>
               <p className="text-xs text-muted-foreground leading-relaxed mt-2">

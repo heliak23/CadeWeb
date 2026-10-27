@@ -50,7 +50,7 @@ export function DocumentacaoPage() {
         </Link>
 
         <div className="grid grid-cols-1 gap-6 md:grid-cols-[220px_1fr]">
-          <nav className="h-fit space-y-0.5 rounded-2xl border border-white/[0.08] bg-[#12131a] p-2 shadow-xl md:sticky md:top-20">
+          <nav className="h-fit space-y-0.5 rounded-2xl border border-border bg-card p-2 shadow-sm dark:shadow-xl md:sticky md:top-20">
             {TOPICOS.map(({ id, label, icone: Icone }) => (
               <button
                 key={id}
@@ -58,8 +58,8 @@ export function DocumentacaoPage() {
                 className={cn(
                   "flex w-full items-center gap-2 rounded-xl px-3 py-2 text-left text-xs font-medium transition-colors",
                   id === topicoAtivo
-                    ? "bg-violet-600/20 text-violet-300 font-semibold border border-violet-500/30"
-                    : "text-muted-foreground hover:bg-white/[0.04] hover:text-white"
+                    ? "bg-violet-500/10 text-violet-600 dark:text-violet-300 font-semibold border border-violet-500/30"
+                    : "text-muted-foreground hover:bg-muted/60 hover:text-foreground"
                 )}
               >
                 <Icone className="size-4 shrink-0" />
@@ -68,7 +68,7 @@ export function DocumentacaoPage() {
             ))}
           </nav>
 
-          <div className="rounded-2xl border border-white/[0.08] bg-[#12131a] p-6 shadow-xl">
+          <div className="rounded-2xl border border-border bg-card p-6 shadow-sm dark:shadow-xl text-foreground">
             <Conteudo />
           </div>
         </div>

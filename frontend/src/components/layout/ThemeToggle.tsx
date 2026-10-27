@@ -11,7 +11,9 @@ export function ThemeToggle() {
       variant="outline"
       size="icon"
       onClick={alternar}
+      title={tema === "dark" ? "Mudar para tema Claro (Lite)" : "Mudar para tema Escuro (Dark)"}
       aria-label="Alternar tema claro/escuro"
+      className="border-border bg-card/60 hover:bg-muted text-foreground transition-colors"
     >
       <AnimatePresence mode="wait" initial={false}>
         <motion.span

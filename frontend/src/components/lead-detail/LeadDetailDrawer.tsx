@@ -116,12 +116,12 @@ export function LeadDetailDrawer({
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
             transition={{ type: "spring", damping: 28, stiffness: 280 }}
-            className="relative z-50 flex h-full w-full max-w-xl flex-col border-l border-white/10 bg-[#121319] text-[#e6e8ee] shadow-2xl overflow-y-auto"
+            className="relative z-50 flex h-full w-full max-w-xl flex-col border-l border-border bg-card text-foreground shadow-2xl overflow-y-auto"
           >
             {/* Header com Nome e Fechar */}
-            <div className="sticky top-0 z-10 flex items-start justify-between border-b border-white/[0.08] bg-[#121319]/90 px-6 py-4 backdrop-blur-md">
+            <div className="sticky top-0 z-10 flex items-start justify-between border-b border-border bg-card/90 px-6 py-4 backdrop-blur-md">
               <div className="space-y-1 pr-4">
-                <h2 className="text-lg font-bold text-white tracking-tight">{lead.nome}</h2>
+                <h2 className="text-lg font-bold text-foreground tracking-tight">{lead.nome}</h2>
                 <p className="text-xs text-muted-foreground flex items-center gap-1.5 flex-wrap">
                   <span>{lead.categoria || "Comércio local"}</span>
                   {lead.cidade && (
@@ -395,10 +395,10 @@ export function LeadDetailDrawer({
                     value={lead.status}
                     onValueChange={(val) => mutations.atualizarStatus.mutate(val as StatusLead)}
                   >
-                    <SelectTrigger className="border-white/10 bg-white/[0.03] text-xs">
+                    <SelectTrigger className="border-border bg-card text-xs">
                       <SelectValue />
                     </SelectTrigger>
-                    <SelectContent className="border-white/10 bg-[#171821] text-white">
+                    <SelectContent className="border-border bg-popover text-popover-foreground">
                       <SelectItem value="novo">Novo</SelectItem>
                       <SelectItem value="contatado">Contatado</SelectItem>
                       <SelectItem value="respondeu">Respondeu</SelectItem>
@@ -412,11 +412,11 @@ export function LeadDetailDrawer({
 
                 <div className="space-y-1.5">
                   <div className="flex items-center justify-between">
-                    <span className="text-xs font-semibold text-white">Notas internas</span>
+                    <span className="text-xs font-semibold text-foreground">Notas internas</span>
                     <button
                       type="button"
                       onClick={salvarNota}
-                      className="text-[11px] text-violet-400 hover:text-violet-300 font-semibold"
+                      className="text-[11px] text-violet-600 dark:text-violet-400 hover:underline font-semibold"
                     >
                       Salvar nota
                     </button>
@@ -426,19 +426,19 @@ export function LeadDetailDrawer({
                     onChange={(e) => setNotaTexto(e.target.value)}
                     placeholder="Registre o contexto da conversa, detalhes acordados ou próximos passos..."
                     rows={3}
-                    className="border-white/10 bg-white/[0.03] text-xs resize-none"
+                    className="border-border bg-card text-xs resize-none"
                   />
                 </div>
               </div>
 
               {/* Ações Especiais: Diagnóstico em PDF, Cockpit, Exclusão */}
-              <div className="flex flex-col gap-2 border-t border-white/[0.08] pt-4">
+              <div className="flex flex-col gap-2 border-t border-border pt-4">
                 <div className="flex items-center justify-between gap-2">
                   <Button
                     size="sm"
                     variant="outline"
                     asChild
-                    className="flex-1 border-white/10 bg-white/5 text-xs text-white hover:bg-white/10"
+                    className="flex-1 border-border bg-card text-xs text-foreground hover:bg-muted"
                   >
                     <a href={`/api/leads/${encodeURIComponent(lead.place_id)}/diagnostico.pdf`}>
                       <FileDown className="size-4" />

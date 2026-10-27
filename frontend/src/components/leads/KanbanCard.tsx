@@ -57,7 +57,7 @@ export function KanbanCard({
       aria-label={`Abrir detalhes de ${lead.nome}`}
       className={cn(
         "group relative flex flex-col gap-2 rounded-2xl border p-3.5 text-left text-xs transition-all duration-150 cursor-grab active:cursor-grabbing",
-        "border-white/[0.08] bg-[#161720]/90 hover:border-violet-500/40 hover:bg-[#1a1b26] hover:shadow-lg hover:shadow-violet-950/20",
+        "border-border bg-card shadow-sm hover:border-violet-500/40 hover:shadow-md dark:border-white/[0.08] dark:bg-[#161720]/90 dark:hover:bg-[#1a1b26] dark:hover:shadow-violet-950/20",
         vencido && "ring-1 ring-amber-500/60 border-amber-500/30",
         isDragging && "shadow-2xl ring-2 ring-violet-500/50 scale-[1.02]"
       )}
@@ -65,7 +65,7 @@ export function KanbanCard({
       {/* Top Header: Nome + Botão Expandir */}
       <div className="flex items-start justify-between gap-2">
         <div className="min-w-0 flex-1">
-          <h4 className="truncate font-semibold text-sm text-white tracking-tight group-hover:text-violet-200 transition-colors">
+          <h4 className="truncate font-semibold text-sm text-foreground tracking-tight group-hover:text-violet-600 dark:group-hover:text-violet-200 transition-colors">
             {lead.nome}
           </h4>
           <p className="truncate text-[11px] text-muted-foreground mt-0.5">
@@ -219,14 +219,14 @@ export function KanbanCard({
           <select
             value={lead.status}
             onChange={(e) => mutations.atualizarStatus.mutate(e.target.value as StatusLead)}
-            className="rounded-lg border border-white/10 bg-white/[0.03] px-2 py-1 text-[10px] font-medium text-muted-foreground hover:text-white focus:outline-none focus:ring-1 focus:ring-violet-500"
+            className="rounded-lg border border-border bg-card px-2 py-1 text-[10px] font-medium text-muted-foreground hover:text-foreground focus:outline-none focus:ring-1 focus:ring-violet-500 transition-colors"
           >
-            <option value="novo" className="bg-[#171821] text-white">Novo</option>
-            <option value="contatado" className="bg-[#171821] text-white">Contatado</option>
-            <option value="respondeu" className="bg-[#171821] text-white">Respondeu</option>
-            <option value="reuniao" className="bg-[#171821] text-white">Reunião</option>
-            <option value="fechou" className="bg-[#171821] text-white">Fechou</option>
-            <option value="recusou" className="bg-[#171821] text-white">Recusou</option>
+            <option value="novo" className="bg-popover text-popover-foreground">Novo</option>
+            <option value="contatado" className="bg-popover text-popover-foreground">Contatado</option>
+            <option value="respondeu" className="bg-popover text-popover-foreground">Respondeu</option>
+            <option value="reuniao" className="bg-popover text-popover-foreground">Reunião</option>
+            <option value="fechou" className="bg-popover text-popover-foreground">Fechou</option>
+            <option value="recusou" className="bg-popover text-popover-foreground">Recusou</option>
           </select>
         </div>
       </div>

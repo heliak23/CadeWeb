@@ -39,18 +39,18 @@ export function AppLayout({ children, breadcrumb, acoesHeader }: AppLayoutProps)
   })()
 
   return (
-    <div className="flex min-h-screen bg-[#0b0c10] text-[#e6e8ee]">
+    <div className="flex min-h-screen bg-background text-foreground transition-colors duration-150">
       {/* Sidebar Lateral */}
       <Sidebar onNovaBusca={() => setModalBuscaAberto(true)} />
 
       {/* Área de Conteúdo Principal */}
       <div className="flex min-w-0 flex-1 flex-col">
         {/* Top Header Barra Superior */}
-        <header className="sticky top-0 z-30 flex h-14 items-center justify-between border-b border-white/[0.06] bg-[#0b0c10]/80 px-4 backdrop-blur-md sm:px-6">
+        <header className="sticky top-0 z-30 flex h-14 items-center justify-between border-b border-border bg-background/80 px-4 backdrop-blur-md sm:px-6 transition-colors">
           <div className="flex items-center gap-2 text-xs font-medium text-muted-foreground">
-            <span className="font-semibold text-foreground/90">{secaoAtual}</span>
-            <span className="text-white/20">/</span>
-            <span className="text-muted-foreground/70">CadêWeb</span>
+            <span className="font-semibold text-foreground">{secaoAtual}</span>
+            <span className="text-muted-foreground/40">/</span>
+            <span className="text-muted-foreground">CadêWeb</span>
           </div>
 
           <div className="flex items-center gap-2.5">
@@ -59,7 +59,7 @@ export function AppLayout({ children, breadcrumb, acoesHeader }: AppLayoutProps)
             <button
               type="button"
               onClick={() => setModalBuscaAberto(true)}
-              className="hidden sm:inline-flex items-center gap-1.5 rounded-lg border border-amber-400/40 bg-amber-400/10 px-2.5 py-1 text-xs font-semibold text-amber-300 transition-colors hover:bg-amber-400/20 active:scale-95"
+              className="hidden sm:inline-flex items-center gap-1.5 rounded-lg border border-amber-500/40 bg-amber-500/10 px-2.5 py-1 text-xs font-semibold text-amber-600 dark:text-amber-300 transition-colors hover:bg-amber-500/20 active:scale-95"
             >
               <Plus className="size-3.5 stroke-[2.5]" />
               <span>Nova busca</span>
@@ -76,12 +76,12 @@ export function AppLayout({ children, breadcrumb, acoesHeader }: AppLayoutProps)
                 })
                 document.dispatchEvent(event)
               }}
-              className="flex items-center gap-1.5 rounded-lg border border-white/[0.08] bg-white/[0.03] px-2.5 py-1 text-xs text-muted-foreground transition-colors hover:border-white/20 hover:text-foreground"
+              className="flex items-center gap-1.5 rounded-lg border border-border bg-card/60 px-2.5 py-1 text-xs text-muted-foreground transition-colors hover:border-violet-500/40 hover:text-foreground"
               title="Busca global (Ctrl + K)"
             >
               <Search className="size-3" />
               <span className="hidden md:inline">Buscar</span>
-              <kbd className="rounded border border-white/10 bg-white/5 px-1 py-0.5 text-[10px] font-mono text-muted-foreground/80">
+              <kbd className="rounded border border-border bg-muted/60 px-1 py-0.5 text-[10px] font-mono text-muted-foreground">
                 ⌘K
               </kbd>
             </button>

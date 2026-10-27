@@ -8,6 +8,7 @@ import { PerfilVendedorCard } from "@/components/configuracoes/PerfilVendedorCar
 import { ProvedorApiCard } from "@/components/configuracoes/ProvedorApiCard"
 import { ScraperProxyCard } from "@/components/configuracoes/ScraperProxyCard"
 import { SomConfigCard } from "@/components/configuracoes/SomConfigCard"
+import { TemaConfigCard } from "@/components/configuracoes/TemaConfigCard"
 import { useConfiguracoes } from "@/hooks/useConfiguracoes"
 
 const TITULOS: Record<"gemini" | "groq" | "nvidia" | "pagespeed", string> = {
@@ -30,6 +31,9 @@ export function ConfiguracoesPage() {
           <ArrowLeft className="size-4" />
           Voltar para o dashboard
         </Link>
+
+        {/* Tema do Aplicativo (Lite / Dark) */}
+        <TemaConfigCard />
 
         <div>
           <h2 className="text-xl font-semibold tracking-tight">Seu perfil</h2>

@@ -174,16 +174,16 @@ export function ModalPrimeiroContato({
 
   return (
     <Dialog open={aberto} onOpenChange={(open) => !open && onFechar()}>
-      <DialogContent className="max-h-[92vh] max-w-4xl overflow-y-auto border-white/10 bg-[#12131a] p-0 text-white shadow-2xl">
-        <DialogHeader className="border-b border-white/[0.08] px-6 py-4">
-          <DialogTitle className="text-lg font-bold text-white flex items-center gap-2">
+      <DialogContent className="max-h-[92vh] max-w-4xl overflow-y-auto border-border bg-card p-0 text-foreground shadow-2xl">
+        <DialogHeader className="border-b border-border px-6 py-4">
+          <DialogTitle className="text-lg font-bold text-foreground flex items-center gap-2">
             <span>Primeiro contato</span>
             <span className="text-xs font-normal text-muted-foreground">
               · Abordagem inteligente
             </span>
           </DialogTitle>
           <p className="text-xs text-muted-foreground">
-            Escolha uma abordagem para <strong className="text-white">{lead.nome}</strong>. Você confere a mensagem antes de enviá-la no WhatsApp.
+            Escolha uma abordagem para <strong className="text-foreground">{lead.nome}</strong>. Você confere a mensagem antes de enviá-la no WhatsApp.
           </p>
         </DialogHeader>
 
@@ -293,11 +293,11 @@ export function ModalPrimeiroContato({
                 value={mensagemCustomizada}
                 onChange={(e) => setMensagemCustomizada(e.target.value)}
                 rows={6}
-                className="resize-none border-white/10 bg-black/40 font-sans text-xs leading-relaxed text-white shadow-inner focus-visible:ring-violet-500"
+                className="resize-none border-border bg-muted/40 font-sans text-xs leading-relaxed text-foreground shadow-inner focus-visible:ring-violet-500"
               />
             </div>
 
-            <div className="flex items-center justify-between border-t border-white/[0.08] pt-3">
+            <div className="flex items-center justify-between border-t border-border pt-3">
               <span className="text-[11px] text-muted-foreground">
                 A conversa abre com o texto preenchido; revise e envie por lá.
               </span>
@@ -307,7 +307,7 @@ export function ModalPrimeiroContato({
                   size="sm"
                   variant="outline"
                   onClick={copiarTexto}
-                  className="border-white/10 bg-white/5 text-xs text-white hover:bg-white/10"
+                  className="border-border bg-card text-xs text-foreground hover:bg-muted"
                 >
                   <Copy className="size-3.5" />
                   Copiar

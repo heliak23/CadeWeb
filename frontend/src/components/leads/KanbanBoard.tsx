@@ -48,17 +48,17 @@ function KanbanColuna({
       ref={setNodeRef}
       className={cn(
         "flex w-80 shrink-0 flex-col gap-2.5 rounded-2xl border p-3 transition-all duration-200",
-        "border-white/[0.06] bg-[#0e0f15]/80 backdrop-blur-md",
-        isOver && "border-violet-500/80 bg-violet-950/20 ring-2 ring-violet-500/40 shadow-xl shadow-violet-950/30"
+        "border-border bg-card/70 dark:bg-[#0e0f15]/80 backdrop-blur-md shadow-sm",
+        isOver && "border-violet-500/80 bg-violet-500/10 dark:bg-violet-950/20 ring-2 ring-violet-500/40 shadow-xl shadow-violet-950/30"
       )}
     >
       {/* Coluna Header com Nome e Contador */}
       <div className="flex items-center justify-between px-1.5 py-1">
         <div className="flex items-center gap-2">
-          <span className="text-xs font-bold text-white tracking-wide">
+          <span className="text-xs font-bold text-foreground tracking-wide">
             {LABEL_STATUS[status]}
           </span>
-          <span className="flex size-5 items-center justify-center rounded-full bg-white/[0.06] text-[10px] font-bold text-muted-foreground">
+          <span className="flex size-5 items-center justify-center rounded-full bg-muted text-[10px] font-bold text-muted-foreground">
             {leads.length}
           </span>
         </div>

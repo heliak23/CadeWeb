@@ -53,7 +53,7 @@ export function LeadsMapsPage() {
     >
       <div className="w-full space-y-4">
         {/* Barra de Filtros e Busca Rápida */}
-        <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-white/[0.06] bg-[#12131a] p-3 shadow-lg">
+        <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-border bg-card p-3 shadow-sm dark:shadow-lg transition-colors">
           <LeadFilterBar
             filtros={filtros}
             setFiltros={setFiltros}
