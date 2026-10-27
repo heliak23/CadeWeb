@@ -65,7 +65,7 @@ exe = EXE(
     bootloader_ignore_signals=False,
     strip=False,
     upx=False,
-    console=os.environ.get("CADEWEB_BUILD_CONSOLE") == "1" or os.environ.get("PROSPECTOS_BUILD_CONSOLE") == "1",
+    console=os.environ.get("CADEWEB_BUILD_CONSOLE") == "1",
     icon=str(RAIZ / "cadeweb.ico") if (RAIZ / "cadeweb.ico").exists() else None,
 )
 

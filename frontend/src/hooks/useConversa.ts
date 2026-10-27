@@ -33,7 +33,7 @@ export function useEventosDoCockpit(canal: string, leadRef: string) {
   const queryClient = useQueryClient()
 
   useEffect(() => {
-    const ponte = window.cadeWeb || window.prospectOS
+    const ponte = window.cadeWeb
     if (!ponte?.aoReceber) return
 
     const cancelarNovas = ponte.aoReceber("cockpit:mensagens-novas", () => {

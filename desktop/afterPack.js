@@ -12,9 +12,6 @@ module.exports = async function aposEmpacotar(contexto) {
   if (!fs.existsSync(exe)) {
     exe = path.join(contexto.appOutDir, "CadeWeb.exe");
   }
-  if (!fs.existsSync(exe)) {
-    exe = path.join(contexto.appOutDir, "ProspectOS.exe");
-  }
   const versao = contexto.packager.appInfo.version;
 
   const iconePath = path.join(__dirname, "cadeweb.ico");

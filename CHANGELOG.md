@@ -6,7 +6,7 @@ e o projeto adota versionamento semântico.
 
 ## [2.0.0] - 2026-07-17
 
-Salto grande: o ProspectOS deixou de ser "achador de leads sem site" e virou uma
+Salto grande: o CadêWeb deixou de ser "achador de leads sem site" e virou uma
 ferramenta completa de prospecção — com análise real de sites, diagnóstico em PDF,
 busca por mapa, estratégia por lead e um modo foco pra prospectar em ritmo.
 

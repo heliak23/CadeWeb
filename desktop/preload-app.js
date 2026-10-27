@@ -31,4 +31,3 @@ const ponte = {
 };
 
 contextBridge.exposeInMainWorld("cadeWeb", ponte);
-contextBridge.exposeInMainWorld("prospectOS", ponte);

@@ -159,7 +159,7 @@ if __name__ == "__main__":
         # empacotado não tem iniciar.bat: o próprio app abre a interface - exceto
         # quando quem subiu o backend foi o shell de desktop (Electron), que tem
         # janela própria e seta CADEWEB_NO_BROWSER=1
-        sem_navegador = os.environ.get("CADEWEB_NO_BROWSER") == "1" or os.environ.get("PROSPECTOS_NO_BROWSER") == "1"
+        sem_navegador = os.environ.get("CADEWEB_NO_BROWSER") == "1"
         if paths.EMPACOTADO and not sem_navegador:
             threading.Timer(1.0, _abrir_navegador, args=(porta,)).start()
 

@@ -44,20 +44,14 @@ if (!primeiraInstancia) {
 function caminhoDoBackend() {
   if (app.isPackaged) {
     // empacotado: o bundle do PyInstaller vai junto como extraResource
-    const novo = path.join(process.resourcesPath, "backend", "CadeWeb.exe");
-    if (fs.existsSync(novo)) return novo;
-    return path.join(process.resourcesPath, "backend", "ProspectOS.exe");
+    return path.join(process.resourcesPath, "backend", "CadeWeb.exe");
   }
   // dev: usa o bundle buildado na pasta do projeto
-  const novoDev = path.join(__dirname, "..", "backend", "dist", "CadeWeb", "CadeWeb.exe");
-  if (fs.existsSync(novoDev)) return novoDev;
-  return path.join(__dirname, "..", "backend", "dist", "ProspectOS", "ProspectOS.exe");
+  return path.join(__dirname, "..", "backend", "dist", "CadeWeb", "CadeWeb.exe");
 }
 
 function arquivoDaPorta() {
-  const caminhoNovo = path.join(process.env.APPDATA, "CadeWeb", "porta.txt");
-  if (fs.existsSync(caminhoNovo)) return caminhoNovo;
-  return path.join(process.env.APPDATA, "ProspectOS", "porta.txt");
+  return path.join(process.env.APPDATA, "CadeWeb", "porta.txt");
 }
 
 /** Sobe o backend e resolve com a porta anunciada. */
@@ -77,7 +71,7 @@ function subirBackend() {
     }
 
     backend = spawn(exe, [], {
-      env: { ...process.env, CADEWEB_NO_BROWSER: "1", PROSPECTOS_NO_BROWSER: "1" },
+      env: { ...process.env, CADEWEB_NO_BROWSER: "1" },
       stdio: ["ignore", "pipe", "pipe"],
       windowsHide: true,
     });
@@ -160,7 +154,7 @@ function urlParaWhatsappWeb(url) {
 
 /** User agent de Chrome puro: o WhatsApp Web recusa navegadores "desconhecidos". */
 function userAgentChrome() {
-  return app.userAgentFallback.replace(/\s?(Electron|cadeweb-desktop|CadêWeb|prospectos-desktop|ProspectOS)\/[\d.]+/g, "");
+  return app.userAgentFallback.replace(/\s?(Electron|cadeweb-desktop|CadêWeb)\/[\d.]+/g, "");
 }
 
 function abrirWhatsapp(url) {

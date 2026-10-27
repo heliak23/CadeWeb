@@ -31,9 +31,6 @@ def caminho_do_banco():
     instalado = appdata / "CadeWeb" / "leads.db"
     if instalado.exists():
         return instalado
-    legado = appdata / "ProspectOS" / "leads.db"
-    if legado.exists():
-        return legado
     return DIR_DADOS / "leads.db"
 
 

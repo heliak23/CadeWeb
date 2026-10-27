@@ -31,14 +31,7 @@ if EMPACOTADO:
     # (na prática a pasta _internal ao lado do .exe)
     DIR_RECURSOS = Path(getattr(sys, "_MEIPASS", Path(sys.executable).parent))
     _appdata = Path(os.environ.get("APPDATA", str(Path.home())))
-    _pasta_nova = _appdata / "CadeWeb"
-    _pasta_legada = _appdata / "ProspectOS"
-    if not _pasta_nova.exists() and _pasta_legada.exists():
-        try:
-            _pasta_legada.rename(_pasta_nova)
-        except Exception:
-            pass
-    DIR_DADOS = _pasta_nova if _pasta_nova.exists() or not _pasta_legada.exists() else _pasta_legada
+    DIR_DADOS = _appdata / "CadeWeb"
 else:
     DIR_RECURSOS = _DIR_FONTE
     DIR_DADOS = _DIR_FONTE

@@ -7,6 +7,5 @@ interface PonteCadeWeb {
 
 interface Window {
   cadeWeb?: PonteCadeWeb
-  prospectOS?: PonteCadeWeb
 }
 
