@@ -36,7 +36,7 @@ num Kanban visual completo com Cockpit diário — do primeiro contato ao fecham
 - [Estrutura do Projeto](#-estrutura-do-projeto)
 - [Segurança & Privacidade](#-segurança--privacidade)
 - [Perguntas Frequentes](#-perguntas-frequentes)
-- [Licença](#-licença)
+- [Uso](#-uso)
 
 ---
 
@@ -182,7 +182,6 @@ CadêWeb/
 
 ---
 
-## 📄 Licença
+## 📄 Uso
 
-Distribuído sob a licença [MIT](LICENSE).
 Sinta-se à vontade para utilizar, modificar e comercializar seus serviços digitais gerados com a ferramenta!
