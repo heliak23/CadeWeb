@@ -111,9 +111,9 @@ export const leadsService = {
       { place_ids: placeIds }
     ),
 
-  excluirDefinitivamente: (placeId: string) =>
+  excluirDefinitivamente: (placeId: string, forcar = false) =>
     httpClient.delete<{ ok: true }>(
-      `/api/leads/${encodeURIComponent(placeId)}`
+      `/api/leads/${encodeURIComponent(placeId)}${forcar ? "?forcar=true" : ""}`
     ),
 
   excluirEmLoteDefinitivamente: (placeIds: string[]) =>

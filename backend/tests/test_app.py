@@ -243,6 +243,18 @@ class TestExclusaoDefinitiva:
         ).fetchone()
         assert existe is not None
 
+    def test_exclui_lead_ativo_com_forcar(self, cliente):
+        inserir_lead("lead-forcado", status="novo")
+
+        resposta = cliente.delete("/api/leads/lead-forcado?forcar=true")
+        assert resposta.status_code == 200
+
+        conexao = sqlite3.connect(db.CAMINHO_BANCO)
+        existe = conexao.execute(
+            "SELECT 1 FROM leads WHERE place_id = ?", ("lead-forcado",)
+        ).fetchone()
+        assert existe is None
+
     def test_exclui_lead_inexistente_retorna_404(self, cliente):
         resposta = cliente.delete("/api/leads/nao-existe")
         assert resposta.status_code == 404

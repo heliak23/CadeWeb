@@ -1,4 +1,4 @@
-import { Archive, Flame, Star } from "lucide-react"
+import { Archive, Flame, Star, Trash2 } from "lucide-react"
 import { motion } from "framer-motion"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
@@ -10,6 +10,7 @@ import { TagChips } from "@/components/leads/TagChips"
 import { FollowupBadge } from "@/components/leads/FollowupBadge"
 import { LeadDificilBadge } from "@/components/leads/LeadDificilBadge"
 import { InstagramIcon } from "@/components/icons/InstagramIcon"
+import { ModalExcluirEmpresa } from "@/components/leads/ModalExcluirEmpresa"
 import type { Lead } from "@/types/lead"
 
 interface LeadCardProps {
@@ -26,7 +27,7 @@ export function LeadCard({
   onAlternarSelecao,
 }: LeadCardProps) {
   const vencido = followupVencidoOuHoje(lead.proximo_followup)
-  const { ignorar } = useLeadMutations(lead.place_id)
+  const { ignorar, excluirDefinitivamente } = useLeadMutations(lead.place_id)
 
   return (
     <motion.div
@@ -109,20 +110,42 @@ export function LeadCard({
         </span>
       </div>
 
-      {lead.lead_dificil && (
-        <Button
-          size="sm"
-          variant="outline"
-          className="w-fit border-destructive/40 text-destructive hover:bg-destructive/10"
-          onClick={(e) => {
-            e.stopPropagation()
-            ignorar.mutate(lead.status)
-          }}
-        >
-          <Archive className="size-3.5" />
-          Arquivar lead difícil
-        </Button>
-      )}
+      <div className="mt-2 flex items-center justify-between border-t border-border/50 pt-2">
+        <div className="flex items-center gap-1.5">
+          {lead.lead_dificil && (
+            <Button
+              size="sm"
+              variant="outline"
+              className="h-7 px-2 text-xs border-destructive/40 text-destructive hover:bg-destructive/10"
+              onClick={(e) => {
+                e.stopPropagation()
+                ignorar.mutate(lead.status)
+              }}
+            >
+              <Archive className="size-3 mr-1" />
+              Arquivar difícil
+            </Button>
+          )}
+        </div>
+
+        <div onClick={(e) => e.stopPropagation()}>
+          <ModalExcluirEmpresa
+            nomeEmpresa={lead.nome}
+            status={lead.status}
+            trigger={
+              <button
+                type="button"
+                className="flex size-7 items-center justify-center rounded-lg border border-border bg-card/60 text-muted-foreground hover:bg-rose-500/15 hover:border-rose-500/30 hover:text-rose-400 transition-colors ml-auto"
+                title="Excluir empresa"
+              >
+                <Trash2 className="size-3.5" />
+              </button>
+            }
+            onExcluirDaLista={() => ignorar.mutate(lead.status)}
+            onExcluirDefinitivamente={() => excluirDefinitivamente.mutate(true)}
+          />
+        </div>
+      </div>
     </motion.div>
   )
 }

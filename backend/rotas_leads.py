@@ -372,7 +372,8 @@ def obter_lead(place_id):
 def excluir_lead_definitivamente(place_id):
     """Apaga a linha do banco de vez - sem volta, sem histórico. Só permite excluir
     leads que já estão com status='ignorado' (proteção contra apagar sem querer um
-    lead ativo direto pela API; excluir um ativo primeiro exige ignorá-lo)."""
+    lead ativo direto pela API; excluir um ativo primeiro exige ignorá-lo).
+    Se ?forcar=true for informado, permite apagar diretamente mesmo que ativo."""
     conexao = db.conectar()
     try:
         lead = conexao.execute(
@@ -380,7 +381,8 @@ def excluir_lead_definitivamente(place_id):
         ).fetchone()
         if lead is None:
             return jsonify({"erro": "lead não encontrado"}), 404
-        if lead["status"] != "ignorado":
+        forcar = request.args.get("forcar", "").lower() in ("true", "1")
+        if lead["status"] != "ignorado" and not forcar:
             return jsonify({"erro": "só é possível excluir definitivamente leads já ignorados"}), 400
 
         conexao.execute("DELETE FROM historico_status WHERE place_id = ?", (place_id,))

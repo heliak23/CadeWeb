@@ -28,7 +28,7 @@ export function DeleteLeadButton({
       <AlertDialogTrigger asChild>
         <Button variant="outline" className="w-full text-destructive hover:bg-destructive/10">
           <Trash2 className="size-4" />
-          {definitivo ? "Excluir definitivamente" : "Excluir este lead"}
+          {definitivo ? "Excluir definitivamente" : "Excluir empresa"}
         </Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
@@ -40,8 +40,8 @@ export function DeleteLeadButton({
           </AlertDialogTitle>
           <AlertDialogDescription>
             {definitivo
-              ? "Isso apaga o lead de vez do banco de dados. Não tem como desfazer, e se a mesma busca rodar de novo no futuro, ele pode voltar a aparecer como lead novo."
-              : "Ele não vai mais aparecer na sua lista, nem em buscas futuras do mesmo nicho/cidade."}
+              ? "Isso apaga a empresa de vez do banco de dados. Não tem como desfazer, e se a mesma busca rodar de novo no futuro, ela pode voltar a aparecer como nova."
+              : "Ela não vai mais aparecer na sua lista, nem em buscas futuras do mesmo nicho/cidade."}
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>

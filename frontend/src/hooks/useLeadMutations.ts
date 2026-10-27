@@ -81,13 +81,13 @@ export function useLeadMutations(placeId: string) {
     mutationFn: (statusAnterior: StatusLead) => leadsService.ignorar(placeId).then(() => statusAnterior),
     onSuccess: (statusAnterior) => {
       invalidarListaEMetricas()
-      toast("Lead ignorado.", {
+      toast("Empresa removida da lista.", {
         action: {
           label: "Desfazer",
           onClick: () => {
             leadsService.atualizarStatus(placeId, statusAnterior).then(() => {
               invalidarListaEMetricas()
-              toast.success("Lead restaurado.")
+              toast.success("Empresa restaurada.")
             })
           },
         },
@@ -106,11 +106,11 @@ export function useLeadMutations(placeId: string) {
   })
 
   const excluirDefinitivamente = useMutation({
-    mutationFn: () => leadsService.excluirDefinitivamente(placeId),
+    mutationFn: (forcar?: boolean) => leadsService.excluirDefinitivamente(placeId, Boolean(forcar)),
     onSuccess: () => {
       invalidarListaEMetricas()
       tocarSom("apagar-lead")
-      toast.success("Lead excluído definitivamente.")
+      toast.success("Empresa excluída definitivamente.")
     },
   })
 

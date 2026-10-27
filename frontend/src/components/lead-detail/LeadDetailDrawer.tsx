@@ -13,11 +13,12 @@ import {
   Phone,
   MapPin,
   Sparkles,
-  Archive,
+  Trash2,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { ModalExcluirEmpresa } from "@/components/leads/ModalExcluirEmpresa"
 import { useLeadMutations } from "@/hooks/useLeadMutations"
 import { formatarNota } from "@/lib/formatters"
 import { InstagramIcon } from "@/components/icons/InstagramIcon"
@@ -457,16 +458,23 @@ export function LeadDetailDrawer({
                   </Button>
                 </div>
 
-                <div className="flex items-center justify-between pt-2">
-                  <Button
-                    size="sm"
-                    variant="ghost"
-                    onClick={() => mutations.ignorar.mutate(lead.status, { onSuccess: onFechar })}
-                    className="text-xs text-rose-400/80 hover:bg-rose-500/10 hover:text-rose-400"
-                  >
-                    <Archive className="size-3.5 mr-1" />
-                    Arquivar lead
-                  </Button>
+                <div className="pt-2 border-t border-border/50">
+                  <ModalExcluirEmpresa
+                    nomeEmpresa={lead.nome}
+                    status={lead.status}
+                    trigger={
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        className="w-full border-destructive/30 text-xs text-destructive hover:bg-destructive/10 hover:text-destructive"
+                      >
+                        <Trash2 className="size-3.5 mr-1.5" />
+                        {lead.status === "ignorado" ? "Excluir definitivamente do banco" : "Excluir empresa"}
+                      </Button>
+                    }
+                    onExcluirDaLista={() => mutations.ignorar.mutate(lead.status, { onSuccess: onFechar })}
+                    onExcluirDefinitivamente={() => mutations.excluirDefinitivamente.mutate(true, { onSuccess: onFechar })}
+                  />
                 </div>
               </div>
             </div>

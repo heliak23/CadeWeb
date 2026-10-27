@@ -4,12 +4,14 @@ import {
   ExternalLink,
   ArrowUpRight,
   Sparkles,
+  Trash2,
 } from "lucide-react"
 import { useSortable } from "@dnd-kit/sortable"
 import { CSS } from "@dnd-kit/utilities"
 import { cn } from "@/lib/utils"
 import { formatarNota, followupVencidoOuHoje } from "@/lib/formatters"
 import { InstagramIcon } from "@/components/icons/InstagramIcon"
+import { ModalExcluirEmpresa } from "@/components/leads/ModalExcluirEmpresa"
 import { useLeadMutations } from "@/hooks/useLeadMutations"
 import type { Lead, StatusLead } from "@/types/lead"
 
@@ -209,6 +211,25 @@ export function KanbanCard({
               <InstagramIcon className="size-3.5" />
             </a>
           )}
+
+          {/* Botão Excluir Empresa */}
+          <div onPointerDown={(e) => e.stopPropagation()} onClick={(e) => e.stopPropagation()}>
+            <ModalExcluirEmpresa
+              nomeEmpresa={lead.nome}
+              status={lead.status}
+              trigger={
+                <button
+                  type="button"
+                  className="flex size-7 items-center justify-center rounded-lg border border-white/5 bg-white/[0.03] text-muted-foreground hover:bg-rose-500/15 hover:border-rose-500/30 hover:text-rose-400 transition-colors"
+                  title="Excluir empresa"
+                >
+                  <Trash2 className="size-3.5" />
+                </button>
+              }
+              onExcluirDaLista={() => mutations.ignorar.mutate(lead.status)}
+              onExcluirDefinitivamente={() => mutations.excluirDefinitivamente.mutate(true)}
+            />
+          </div>
         </div>
 
         {/* Dropdown Rápido de Status no próprio card */}
