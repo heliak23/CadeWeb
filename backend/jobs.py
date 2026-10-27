@@ -415,6 +415,33 @@ def _ler_queries_da_busca():
     return [linha.strip() for linha in texto.splitlines() if linha.strip()]
 
 
+def _geocodificar_primeira_query():
+    """Tenta extrair a cidade/local da primeira query de texto e geocodificar
+    via Nominatim (OpenStreetMap, gratuito). Retorna (lat, lng) ou None."""
+    queries = _ler_queries_da_busca()
+    if not queries:
+        return None
+    import re
+    import requests
+
+    primeira = queries[0]
+    partes = re.split(r"\s+(?:em|na|no|in)\s+", primeira, flags=re.IGNORECASE)
+    alvo = partes[-1].strip() if len(partes) > 1 else primeira.strip()
+    try:
+        resp = requests.get(
+            "https://nominatim.openstreetmap.org/search",
+            params={"format": "jsonv2", "q": alvo, "countrycodes": "br", "limit": 1},
+            headers={"User-Agent": "CadeWeb/1.0"},
+            timeout=5,
+        )
+        if resp.ok and resp.json():
+            item = resp.json()[0]
+            return float(item["lat"]), float(item["lon"])
+    except Exception:
+        logger.debug("geocodificação de '%s' falhou", alvo)
+    return None
+
+
 def _capturar_dados_brutos(arquivo_bruto, ambiente, area=None):
     """Gera o CSV bruto na fonte configurada: scraper local (padrão) ou Google
     Places API. As duas escrevem o MESMO formato de CSV, então o resto do
@@ -448,11 +475,25 @@ def _capturar_dados_brutos(arquivo_bruto, ambiente, area=None):
 
     flags_geo = ()
     if area:
+        # Modo mapa: usa -fast-mode que consulta a API interna do Maps diretamente,
+        # contornando as telas de consentimento e bloqueios do Playwright em headless
         flags_geo = (
+            "-fast-mode",
             "-geo", f"{area['lat']},{area['lng']}",
             "-radius", str(area["raio_m"]),
             "-zoom", str(zoom_para_raio(area["raio_m"])),
         )
+    else:
+        # Modo texto: geocodifica a cidade para aplicar o fast-mode direto na região
+        coords = _geocodificar_primeira_query()
+        if coords:
+            flags_geo = (
+                "-fast-mode",
+                "-geo", f"{coords[0]},{coords[1]}",
+                "-radius", "15000",
+                "-zoom", "13",
+            )
+
     return _executar_scraper(arquivo_bruto, ambiente, flags_geo)
 
 

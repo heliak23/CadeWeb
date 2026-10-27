@@ -1,16 +1,14 @@
 import { ArrowLeft } from "lucide-react"
 import { Link } from "react-router-dom"
-import { Header } from "@/components/layout/Header"
+import { AppLayout } from "@/components/layout/AppLayout"
 import { MetricsDashboard } from "@/components/dashboard/MetricsDashboard"
 import { FunilConversao } from "@/components/dashboard/FunilConversao"
 import { BreakdownNicho } from "@/components/dashboard/BreakdownNicho"
 
 export function AnalyticsPage() {
   return (
-    <div className="min-h-screen bg-background text-foreground">
-      <Header />
-
-      <main className="mx-auto w-full max-w-6xl space-y-6 px-4 py-6 sm:px-6">
+    <AppLayout breadcrumb="Analytics">
+      <div className="mx-auto w-full max-w-6xl space-y-6">
         <Link
           to="/"
           className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground"
@@ -19,7 +17,7 @@ export function AnalyticsPage() {
           Voltar para o dashboard
         </Link>
 
-        <h2 className="text-xl font-semibold tracking-tight">Analytics</h2>
+        <h2 className="text-xl font-semibold tracking-tight text-white">Analytics de Performance</h2>
 
         <MetricsDashboard />
 
@@ -27,7 +25,7 @@ export function AnalyticsPage() {
           <FunilConversao />
           <BreakdownNicho />
         </div>
-      </main>
-    </div>
+      </div>
+    </AppLayout>
   )
 }

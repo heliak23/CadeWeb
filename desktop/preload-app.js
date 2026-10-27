@@ -17,7 +17,7 @@ const EVENTOS = [
   "cockpit:leitura-falhou",
 ];
 
-contextBridge.exposeInMainWorld("prospectOS", {
+const ponte = {
   desktop: true,
   versao: process.env.npm_package_version || null,
 
@@ -28,4 +28,7 @@ contextBridge.exposeInMainWorld("prospectOS", {
     ipcRenderer.on(evento, ouvinte);
     return () => ipcRenderer.removeListener(evento, ouvinte);
   },
-});
+};
+
+contextBridge.exposeInMainWorld("cadeWeb", ponte);
+contextBridge.exposeInMainWorld("prospectOS", ponte);

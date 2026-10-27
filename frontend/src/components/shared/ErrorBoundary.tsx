@@ -29,7 +29,7 @@ export class ErrorBoundary extends Component<Props, State> {
 
   componentDidCatch(erro: Error, info: ErrorInfo) {
     // console é o melhor destino: aparece no F12 e em relatos de bug
-    console.error("[ProspectOS] erro de renderização:", erro, info.componentStack)
+    console.error("[CadêWeb] erro de renderização:", erro, info.componentStack)
   }
 
   render() {
@@ -56,9 +56,9 @@ export class ErrorBoundary extends Component<Props, State> {
           Algo deu errado nesta tela
         </h1>
         <p style={{ maxWidth: 560, margin: 0, color: "#9aa8b2", fontSize: 15, lineHeight: 1.5 }}>
-          O ProspectOS encontrou um erro inesperado. Recarregar geralmente
-          resolve. Se continuar acontecendo, tire um print desta tela e abra um
-          issue no GitHub - a mensagem abaixo diz exatamente o que quebrou.
+          O CadêWeb encontrou um erro inesperado. Recarregar geralmente
+          resolve. Se continuar acontecendo, tire um print desta tela e reporte
+          o que aconteceu - a mensagem abaixo diz exatamente o que quebrou.
         </p>
         <pre
           style={{
@@ -94,7 +94,7 @@ export class ErrorBoundary extends Component<Props, State> {
             cursor: "pointer",
           }}
         >
-          Recarregar o ProspectOS
+          Recarregar o CadêWeb
         </button>
       </div>
     )

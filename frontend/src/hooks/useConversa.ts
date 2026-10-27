@@ -27,13 +27,13 @@ export function useEstadoCaptura() {
 }
 
 /** No app de desktop, a janela do WhatsApp empurra eventos assim que captura
- * algo - isso tira o atraso do polling. No navegador, window.prospectOS não
+ * algo - isso tira o atraso do polling. No navegador, window.cadeWeb não
  * existe e o hook simplesmente não faz nada. */
 export function useEventosDoCockpit(canal: string, leadRef: string) {
   const queryClient = useQueryClient()
 
   useEffect(() => {
-    const ponte = window.prospectOS
+    const ponte = window.cadeWeb || window.prospectOS
     if (!ponte?.aoReceber) return
 
     const cancelarNovas = ponte.aoReceber("cockpit:mensagens-novas", () => {

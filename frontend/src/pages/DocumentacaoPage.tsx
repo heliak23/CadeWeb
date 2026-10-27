@@ -10,7 +10,7 @@ import {
   Settings,
   User,
 } from "lucide-react"
-import { Header } from "@/components/layout/Header"
+import { AppLayout } from "@/components/layout/AppLayout"
 import { InstagramIcon } from "@/components/icons/InstagramIcon"
 import { cn } from "@/lib/utils"
 import { VisaoGeralDoc } from "@/components/documentacao/secoes/VisaoGeralDoc"
@@ -39,10 +39,8 @@ export function DocumentacaoPage() {
   const Conteudo = topico.Conteudo
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
-      <Header />
-
-      <main className="mx-auto w-full max-w-6xl px-4 py-6 sm:px-6">
+    <AppLayout breadcrumb="Guia & Documentação">
+      <div className="mx-auto w-full max-w-6xl">
         <Link
           to="/"
           className="mb-4 inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground"
@@ -52,16 +50,16 @@ export function DocumentacaoPage() {
         </Link>
 
         <div className="grid grid-cols-1 gap-6 md:grid-cols-[220px_1fr]">
-          <nav className="h-fit space-y-0.5 rounded-xl border border-border bg-card p-2 shadow-sm md:sticky md:top-20">
+          <nav className="h-fit space-y-0.5 rounded-2xl border border-white/[0.08] bg-[#12131a] p-2 shadow-xl md:sticky md:top-20">
             {TOPICOS.map(({ id, label, icone: Icone }) => (
               <button
                 key={id}
                 onClick={() => setTopicoAtivo(id)}
                 className={cn(
-                  "flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-sm font-medium transition-colors",
+                  "flex w-full items-center gap-2 rounded-xl px-3 py-2 text-left text-xs font-medium transition-colors",
                   id === topicoAtivo
-                    ? "bg-primary/15 text-primary"
-                    : "text-muted-foreground hover:bg-accent/40 hover:text-foreground"
+                    ? "bg-violet-600/20 text-violet-300 font-semibold border border-violet-500/30"
+                    : "text-muted-foreground hover:bg-white/[0.04] hover:text-white"
                 )}
               >
                 <Icone className="size-4 shrink-0" />
@@ -70,11 +68,11 @@ export function DocumentacaoPage() {
             ))}
           </nav>
 
-          <div className="rounded-xl border border-border bg-card p-6 shadow-sm">
+          <div className="rounded-2xl border border-white/[0.08] bg-[#12131a] p-6 shadow-xl">
             <Conteudo />
           </div>
         </div>
-      </main>
-    </div>
+      </div>
+    </AppLayout>
   )
 }

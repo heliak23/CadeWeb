@@ -1,10 +1,10 @@
 /**
- * Shell de desktop do ProspectOS.
+ * Shell de desktop do CadêWeb.
  *
  * Papel deste processo:
  *  1. subir o backend empacotado (PyInstaller) como processo filho ("sidecar");
  *  2. descobrir em que porta ele ficou (lê "LISTENING_ON=<porta>" do stdout,
- *     com fallback pro porta.txt em %APPDATA%\ProspectOS);
+ *     com fallback pro porta.txt em %APPDATA%\CadeWeb);
  *  3. abrir a janela apontando pra http://127.0.0.1:<porta>;
  *  4. abrir links de WhatsApp numa janela interna de WhatsApp Web (sessão
  *     persistente - escaneia o QR uma vez) e links externos no navegador real;
@@ -26,7 +26,9 @@ let backendEncerradoDeProposito = false;
 let atualizacaoBaixada = false;
 let portaBackend = null; // preenchida quando o sidecar anuncia a porta
 
-const ICONE = path.join(__dirname, "prospectos.ico");
+const ICONE = fs.existsSync(path.join(__dirname, "cadeweb.ico"))
+  ? path.join(__dirname, "cadeweb.ico")
+  : path.join(__dirname, "prospectos.ico");
 
 // só uma instância do app por vez (a segunda só foca a janela da primeira)
 const primeiraInstancia = app.requestSingleInstanceLock();
@@ -44,13 +46,19 @@ if (!primeiraInstancia) {
 function caminhoDoBackend() {
   if (app.isPackaged) {
     // empacotado: o bundle do PyInstaller vai junto como extraResource
+    const novo = path.join(process.resourcesPath, "backend", "CadeWeb.exe");
+    if (fs.existsSync(novo)) return novo;
     return path.join(process.resourcesPath, "backend", "ProspectOS.exe");
   }
   // dev: usa o bundle buildado na pasta do projeto
+  const novoDev = path.join(__dirname, "..", "backend", "dist", "CadeWeb", "CadeWeb.exe");
+  if (fs.existsSync(novoDev)) return novoDev;
   return path.join(__dirname, "..", "backend", "dist", "ProspectOS", "ProspectOS.exe");
 }
 
 function arquivoDaPorta() {
+  const caminhoNovo = path.join(process.env.APPDATA, "CadeWeb", "porta.txt");
+  if (fs.existsSync(caminhoNovo)) return caminhoNovo;
   return path.join(process.env.APPDATA, "ProspectOS", "porta.txt");
 }
 
@@ -71,7 +79,7 @@ function subirBackend() {
     }
 
     backend = spawn(exe, [], {
-      env: { ...process.env, PROSPECTOS_NO_BROWSER: "1" },
+      env: { ...process.env, CADEWEB_NO_BROWSER: "1", PROSPECTOS_NO_BROWSER: "1" },
       stdio: ["ignore", "pipe", "pipe"],
       windowsHide: true,
     });
@@ -97,8 +105,8 @@ function subirBackend() {
       } else {
         // backend caiu com o app aberto: avisa e fecha
         dialog.showErrorBox(
-          "ProspectOS",
-          "O motor do ProspectOS parou de responder. O aplicativo será fechado."
+          "CadêWeb",
+          "O motor do CadêWeb parou de responder. O aplicativo será fechado."
         );
         app.quit();
       }
@@ -154,7 +162,7 @@ function urlParaWhatsappWeb(url) {
 
 /** User agent de Chrome puro: o WhatsApp Web recusa navegadores "desconhecidos". */
 function userAgentChrome() {
-  return app.userAgentFallback.replace(/\s?(Electron|prospectos-desktop|ProspectOS)\/[\d.]+/g, "");
+  return app.userAgentFallback.replace(/\s?(Electron|cadeweb-desktop|CadêWeb|prospectos-desktop|ProspectOS)\/[\d.]+/g, "");
 }
 
 function abrirWhatsapp(url) {
@@ -173,7 +181,7 @@ function abrirWhatsapp(url) {
     minWidth: 800,
     minHeight: 600,
     icon: ICONE,
-    title: "WhatsApp · ProspectOS",
+    title: "WhatsApp · CadêWeb",
     autoHideMenuBar: true,
     webPreferences: {
       // sessão própria e persistente: o login (QR) sobrevive a restarts do app
@@ -216,7 +224,7 @@ async function postarNoBackend(rota, corpo) {
     });
     return await resposta.json();
   } catch (erro) {
-    console.error("[ProspectOS] falha ao falar com o backend:", erro.message);
+    console.error("[CadêWeb] falha ao falar com o backend:", erro.message);
     return null;
   }
 }
@@ -247,7 +255,7 @@ function registrarPonteWhatsapp() {
 
   ipcMain.on("whatsapp:leitura-falhou", (evento, dados) => {
     if (!veioDaJanelaWhatsapp(evento)) return;
-    console.warn("[ProspectOS] leitura do WhatsApp falhou:", dados && dados.detalhe);
+    console.warn("[CadêWeb] leitura do WhatsApp falhou:", dados && dados.detalhe);
     avisarInterface("cockpit:leitura-falhou", dados);
   });
 }
@@ -283,7 +291,7 @@ function criarJanela(porta) {
       // a interface é o React servido pelo backend - sem necessidade de Node no renderer
       nodeIntegration: false,
       contextIsolation: true,
-      // expõe só window.prospectOS (flag de desktop + eventos do cockpit)
+      // expõe só window.cadeWeb (flag de desktop + eventos do cockpit)
       preload: path.join(__dirname, "preload-app.js"),
     },
   });
@@ -319,8 +327,8 @@ function montarMenu() {
         { label: "Verificar atualizações", click: () => verificarAtualizacoes(true) },
         { type: "separator" },
         {
-          label: "ProspectOS no GitHub",
-          click: () => shell.openExternal("https://github.com/nando0x/ProspectOS"),
+          label: "CadêWeb",
+          click: () => {},
         },
       ],
     },
@@ -358,7 +366,7 @@ function configurarAutoUpdate() {
         message: `Nova versão disponível: v${info.version}`,
         detail:
           "A atualização já foi baixada. Reinicie agora para aplicar, ou continue " +
-          "trabalhando - ela será instalada quando você fechar o ProspectOS.",
+          "trabalhando - ela será instalada quando você fechar o CadêWeb.",
         buttons: ["Reiniciar agora", "Depois"],
         defaultId: 0,
         cancelId: 1,
@@ -431,8 +439,8 @@ app.whenReady().then(async () => {
     configurarAutoUpdate();
   } catch (erro) {
     dialog.showErrorBox(
-      "ProspectOS não conseguiu iniciar",
-      `${erro.message}\n\nVeja os logs em %APPDATA%\\ProspectOS\\logs\\prospeccao.log`
+      "CadêWeb não conseguiu iniciar",
+      `${erro.message}\n\nVeja os logs em %APPDATA%\\CadeWeb\\logs\\prospeccao.log`
     );
     app.quit();
   }

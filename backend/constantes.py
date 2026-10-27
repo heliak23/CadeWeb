@@ -1,11 +1,9 @@
-"""Constantes de domínio compartilhadas entre os módulos de rotas e jobs."""
-
-STATUS_VALIDOS = {"novo", "contatado", "respondeu", "fechou", "recusou", "ignorado"}
+STATUS_VALIDOS = {"novo", "contatado", "respondeu", "reuniao", "fechou", "recusou", "ignorado"}
 STATUS_QUE_ENCERRAM_FOLLOWUP = {"fechou", "recusou", "ignorado"}
 
 # Ordem "natural" do funil de prospecção - da entrada até o fechamento.
 # "recusou" fica de fora do funil (é uma saída, não um estágio de progresso).
-ESTAGIOS_FUNIL = ["novo", "contatado", "respondeu", "fechou"]
+ESTAGIOS_FUNIL = ["novo", "contatado", "respondeu", "reuniao", "fechou"]
 
 PRIORIDADES_VALIDAS = {"alta", "media", "baixa", "descartado"}
 

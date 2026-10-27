@@ -27,7 +27,7 @@ logger = logging.getLogger(__name__)
 
 NOTA_MINIMA = 4.0
 # tudo que este módulo escreve (saídas, banco, queries.txt da última busca) fica
-# na área de dados - na fonte é a pasta do projeto, empacotado é %APPDATA%\ProspectOS
+# na área de dados - na fonte é a pasta do projeto, empacotado é %APPDATA%\CadeWeb
 PASTA_SAIDAS = DIR_DADOS / "saidas"
 CAMINHO_BANCO = DIR_DADOS / "leads.db"
 VERIFICACOES_PARALELAS = 6

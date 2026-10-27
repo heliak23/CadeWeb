@@ -1,24 +1,34 @@
 /**
- * Hook afterPack do electron-builder: aplica ícone e metadata no ProspectOS.exe
- * via rcedit (substitui o signAndEditExecutable, desligado porque o pacote
- * winCodeSign exige privilégio de symlink que nem todo Windows tem).
+ * Hook afterPack do electron-builder: aplica ícone e metadata no executável
+ * via rcedit.
  */
 
 const path = require("path");
+const fs = require("fs");
 const { rcedit } = require("rcedit");
 
 module.exports = async function aposEmpacotar(contexto) {
-  const exe = path.join(contexto.appOutDir, "ProspectOS.exe");
+  let exe = path.join(contexto.appOutDir, "CadêWeb.exe");
+  if (!fs.existsSync(exe)) {
+    exe = path.join(contexto.appOutDir, "CadeWeb.exe");
+  }
+  if (!fs.existsSync(exe)) {
+    exe = path.join(contexto.appOutDir, "ProspectOS.exe");
+  }
   const versao = contexto.packager.appInfo.version;
 
+  const iconePath = fs.existsSync(path.join(__dirname, "cadeweb.ico"))
+    ? path.join(__dirname, "cadeweb.ico")
+    : path.join(__dirname, "prospectos.ico");
+
   await rcedit(exe, {
-    icon: path.join(__dirname, "prospectos.ico"),
+    icon: iconePath,
     "version-string": {
-      ProductName: "ProspectOS",
-      FileDescription: "ProspectOS - prospecção de leads com IA",
-      CompanyName: "nando0x",
+      ProductName: "CadêWeb",
+      FileDescription: "CadêWeb - Prospecção inteligente de clientes locais",
+      CompanyName: "CadêWeb",
       LegalCopyright: "MIT License",
-      OriginalFilename: "ProspectOS.exe",
+      OriginalFilename: path.basename(exe),
     },
     "file-version": versao,
     "product-version": versao,

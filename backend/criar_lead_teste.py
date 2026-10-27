@@ -24,12 +24,16 @@ PLACE_ID = "TESTE-MEU-NUMERO"
 
 
 def caminho_do_banco():
-    """O banco do APP INSTALADO fica em %APPDATA%\\ProspectOS; o de quem roda do
+    """O banco do APP INSTALADO fica em %APPDATA%\\CadeWeb; o de quem roda do
     código-fonte fica na pasta do projeto. Este script existe pra testar o app,
     então prefere o instalado quando ele existe - e diz qual escolheu."""
-    instalado = Path(os.environ.get("APPDATA", "")) / "ProspectOS" / "leads.db"
+    appdata = Path(os.environ.get("APPDATA", ""))
+    instalado = appdata / "CadeWeb" / "leads.db"
     if instalado.exists():
         return instalado
+    legado = appdata / "ProspectOS" / "leads.db"
+    if legado.exists():
+        return legado
     return DIR_DADOS / "leads.db"
 
 
@@ -81,7 +85,7 @@ def criar(telefone_bruto):
         conexao.close()
 
     print(f"Lead de teste pronto com o número {digitos}.")
-    print("Abra o ProspectOS -> Google Maps -> procure por 'TESTE - Meu próprio número'.")
+    print("Abra o CadêWeb -> Google Maps -> procure por 'TESTE - Meu próprio número'.")
 
 
 if __name__ == "__main__":

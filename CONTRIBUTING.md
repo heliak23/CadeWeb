@@ -1,4 +1,4 @@
-# Contribuindo com o ProspectOS
+# Contribuindo com o CadêWeb
 
 Obrigado pelo interesse! Este é um projeto mantido nas horas vagas, então o
 processo é leve — só bom senso.

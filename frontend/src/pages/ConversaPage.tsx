@@ -173,7 +173,7 @@ export function ConversaPage() {
                 </Button>
               </div>
               <p className="mt-2 text-[11px] text-muted-foreground">
-                O ProspectOS nunca envia mensagem sozinho: você revisa e envia pelo
+                O CadêWeb nunca envia mensagem sozinho: você revisa e envia pelo
                 WhatsApp.
               </p>
             </div>

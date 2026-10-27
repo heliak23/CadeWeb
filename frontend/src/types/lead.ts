@@ -2,6 +2,7 @@ export type StatusLead =
   | "novo"
   | "contatado"
   | "respondeu"
+  | "reuniao"
   | "fechou"
   | "recusou"
   | "ignorado"
@@ -10,6 +11,7 @@ export const STATUS_VALIDOS: StatusLead[] = [
   "novo",
   "contatado",
   "respondeu",
+  "reuniao",
   "fechou",
   "recusou",
   "ignorado",

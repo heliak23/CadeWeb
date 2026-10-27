@@ -1,6 +1,6 @@
 import { ArrowLeft } from "lucide-react"
 import { Link } from "react-router-dom"
-import { Header } from "@/components/layout/Header"
+import { AppLayout } from "@/components/layout/AppLayout"
 import { Skeleton } from "@/components/ui/skeleton"
 import { FonteMapsCard } from "@/components/configuracoes/FonteMapsCard"
 import { InstagramContaCard } from "@/components/configuracoes/InstagramContaCard"
@@ -21,10 +21,8 @@ export function ConfiguracoesPage() {
   const { data, isLoading } = useConfiguracoes()
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
-      <Header />
-
-      <main className="mx-auto w-full max-w-2xl space-y-6 px-4 py-6 sm:px-6">
+    <AppLayout breadcrumb="Configurações">
+      <div className="mx-auto w-full max-w-2xl space-y-6">
         <Link
           to="/"
           className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground"
@@ -121,7 +119,7 @@ export function ConfiguracoesPage() {
         </div>
 
         <SomConfigCard />
-      </main>
-    </div>
+      </div>
+    </AppLayout>
   )
 }

@@ -12,56 +12,77 @@ import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable"
 import { useDroppable } from "@dnd-kit/core"
 import { toast } from "sonner"
 import { cn } from "@/lib/utils"
-import { LABEL_STATUS, COR_STATUS } from "@/lib/constants"
+import { LABEL_STATUS } from "@/lib/constants"
 import { KanbanCard } from "@/components/leads/KanbanCard"
 import { leadsService } from "@/services/leadsService"
 import { useInvalidarLeads } from "@/hooks/useInvalidarLeads"
 import { tocarSom } from "@/hooks/useSom"
 import type { Lead, StatusLead } from "@/types/lead"
 
-const COLUNAS_FUNIL: StatusLead[] = ["novo", "contatado", "respondeu", "fechou"]
+const COLUNAS_FUNIL: StatusLead[] = [
+  "novo",
+  "contatado",
+  "respondeu",
+  "reuniao",
+  "fechou",
+  "recusou",
+]
 
 interface KanbanColunaProps {
   status: StatusLead
   leads: Lead[]
   onSelecionarLead: (lead: Lead) => void
+  onAbrirPrimeiroContato?: (lead: Lead) => void
 }
 
-function KanbanColuna({ status, leads, onSelecionarLead }: KanbanColunaProps) {
+function KanbanColuna({
+  status,
+  leads,
+  onSelecionarLead,
+  onAbrirPrimeiroContato,
+}: KanbanColunaProps) {
   const { setNodeRef, isOver } = useDroppable({ id: status })
 
   return (
     <div
       ref={setNodeRef}
       className={cn(
-        "flex w-72 shrink-0 flex-col gap-2 rounded-xl border border-border bg-muted/20 p-2.5 transition-colors",
-        isOver && "bg-accent/40 ring-2 ring-primary/50"
+        "flex w-80 shrink-0 flex-col gap-2.5 rounded-2xl border p-3 transition-all duration-200",
+        "border-white/[0.06] bg-[#0e0f15]/80 backdrop-blur-md",
+        isOver && "border-violet-500/80 bg-violet-950/20 ring-2 ring-violet-500/40 shadow-xl shadow-violet-950/30"
       )}
     >
-      <div className="flex items-center justify-between px-1 py-1">
-        <span
-          className={cn(
-            "rounded-full border px-2 py-0.5 text-xs font-medium uppercase tracking-wide",
-            COR_STATUS[status]
-          )}
-        >
-          {LABEL_STATUS[status]}
-        </span>
-        <span className="text-xs text-muted-foreground">{leads.length}</span>
+      {/* Coluna Header com Nome e Contador */}
+      <div className="flex items-center justify-between px-1.5 py-1">
+        <div className="flex items-center gap-2">
+          <span className="text-xs font-bold text-white tracking-wide">
+            {LABEL_STATUS[status]}
+          </span>
+          <span className="flex size-5 items-center justify-center rounded-full bg-white/[0.06] text-[10px] font-bold text-muted-foreground">
+            {leads.length}
+          </span>
+        </div>
       </div>
 
       <SortableContext
         items={leads.map((l) => l.place_id)}
         strategy={verticalListSortingStrategy}
       >
-        <div className="flex min-h-[60px] flex-col gap-2">
+        <div className="flex min-h-[120px] flex-col gap-2.5">
           {leads.map((lead) => (
             <KanbanCard
               key={lead.place_id}
               lead={lead}
               onClick={() => onSelecionarLead(lead)}
+              onAbrirPrimeiroContato={onAbrirPrimeiroContato}
             />
           ))}
+
+          {leads.length === 0 && (
+            <div className="flex flex-1 items-center justify-center rounded-xl border border-dashed border-white/5 py-8 text-center text-xs text-muted-foreground/40">
+              Nenhum lead nesta etapa
+            </div>
+          )}
         </div>
       </SortableContext>
     </div>
@@ -71,9 +92,14 @@ function KanbanColuna({ status, leads, onSelecionarLead }: KanbanColunaProps) {
 interface KanbanBoardProps {
   leads: Lead[]
   onSelecionarLead: (lead: Lead) => void
+  onAbrirPrimeiroContato?: (lead: Lead) => void
 }
 
-export function KanbanBoard({ leads, onSelecionarLead }: KanbanBoardProps) {
+export function KanbanBoard({
+  leads,
+  onSelecionarLead,
+  onAbrirPrimeiroContato,
+}: KanbanBoardProps) {
   const invalidarListaEMetricas = useInvalidarLeads()
   const [leadArrastado, setLeadArrastado] = useState<Lead | null>(null)
 
@@ -125,20 +151,27 @@ export function KanbanBoard({ leads, onSelecionarLead }: KanbanBoardProps) {
       onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}
     >
-      <div className="flex gap-3 overflow-x-auto pb-2">
+      <div className="flex gap-4 overflow-x-auto pb-4">
         {COLUNAS_FUNIL.map((status) => (
           <KanbanColuna
             key={status}
             status={status}
             leads={leadsPorStatus[status]}
             onSelecionarLead={onSelecionarLead}
+            onAbrirPrimeiroContato={onAbrirPrimeiroContato}
           />
         ))}
       </div>
 
+      <p className="pt-1 text-xs text-muted-foreground/60">
+        6 etapas no quadro. Arraste por um espaço vazio ou role para o lado.
+      </p>
+
       <DragOverlay>
         {leadArrastado && (
-          <KanbanCard lead={leadArrastado} onClick={() => {}} />
+          <div className="rotate-2 scale-105 shadow-2xl ring-2 ring-violet-500/80 rounded-2xl">
+            <KanbanCard lead={leadArrastado} onClick={() => {}} />
+          </div>
         )}
       </DragOverlay>
     </DndContext>

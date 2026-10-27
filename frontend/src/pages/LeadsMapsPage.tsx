@@ -1,18 +1,12 @@
 import { useEffect, useRef, useState } from "react"
-import { ArrowLeft, Download } from "lucide-react"
-import { Link } from "react-router-dom"
-import { Header } from "@/components/layout/Header"
+import { Download } from "lucide-react"
+import { AppLayout } from "@/components/layout/AppLayout"
 import { Button } from "@/components/ui/button"
-import { GoogleMapsBanner } from "@/components/leads/GoogleMapsBanner"
-import { MetricsDashboard } from "@/components/dashboard/MetricsDashboard"
 import { LeadFilterBar } from "@/components/filters/LeadFilterBar"
 import { LeadGrid } from "@/components/leads/LeadGrid"
-import { LeadDetailModal } from "@/components/lead-detail/LeadDetailModal"
-import { NovaBuscaModal } from "@/components/search-modal/NovaBuscaModal"
-import { HistoricoBuscas } from "@/components/search-modal/HistoricoBuscas"
-import { BuscaFloatingIndicator } from "@/components/search-modal/BuscaFloatingIndicator"
+import { LeadDetailDrawer } from "@/components/lead-detail/LeadDetailDrawer"
+import { ModalPrimeiroContato } from "@/components/leads/ModalPrimeiroContato"
 import { useFiltrosLeads } from "@/hooks/useFiltrosLeads"
-import { useBusca } from "@/hooks/useBusca"
 import { useLeads } from "@/hooks/useLeads"
 import { useAtalhosTeclado } from "@/hooks/useAtalhosTeclado"
 import { urlExportarCsv } from "@/services/leadsService"
@@ -21,63 +15,45 @@ import type { Lead } from "@/types/lead"
 export function LeadsMapsPage() {
   const { filtros, setFiltros, limpar, filtrosEmUso } = useFiltrosLeads()
   const buscaInputRef = useRef<HTMLInputElement>(null)
-  const [placeIdSelecionado, setPlaceIdSelecionado] = useState<string | null>(
-    null
-  )
+  const [placeIdSelecionado, setPlaceIdSelecionado] = useState<string | null>(null)
+  const [leadPrimeiroContato, setLeadPrimeiroContato] = useState<Lead | null>(null)
+
   const { leads } = useLeads(filtros)
-  // guarda o lead do modal em estado próprio: se ele sair da lista (ex.: mudei o
-  // status pra um que não passa no filtro atual), o modal continua aberto com o
-  // último dado conhecido em vez de fechar sozinho no meio da interação.
   const [leadSelecionado, setLeadSelecionado] = useState<Lead | null>(null)
+
   useEffect(() => {
     if (placeIdSelecionado === null) {
       setLeadSelecionado(null)
       return
     }
     const atual = leads.find((l) => l.place_id === placeIdSelecionado)
-    if (atual) setLeadSelecionado(atual) // atualiza enquanto o lead está visível
+    if (atual) setLeadSelecionado(atual)
   }, [placeIdSelecionado, leads])
-  const [modalBuscaAberto, setModalBuscaAberto] = useState(false)
-  const [buscaMinimizada, setBuscaMinimizada] = useState(false)
-  const busca = useBusca()
-  const { resultadoFinal } = busca
-
-  useEffect(() => {
-    if (resultadoFinal && buscaMinimizada) {
-      setBuscaMinimizada(false)
-      setModalBuscaAberto(true)
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [resultadoFinal])
 
   useAtalhosTeclado({
     onFocarBusca: () => buscaInputRef.current?.focus(),
-    onNovaBusca: () => setModalBuscaAberto(true),
   })
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
-      <Header
-        onNovaBusca={() => setModalBuscaAberto(true)}
-        onVerIgnorados={() => setFiltros((f) => ({ ...f, status: "ignorado" }))}
-      />
-
-      <main className="mx-auto w-full max-w-6xl space-y-6 px-4 py-6 sm:px-6">
-        <Link
-          to="/"
-          className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground"
+    <AppLayout
+      breadcrumb="Empresas (CRM)"
+      acoesHeader={
+        <Button
+          variant="outline"
+          size="sm"
+          asChild
+          className="h-8 border-white/10 bg-white/[0.03] text-xs text-white hover:bg-white/10"
         >
-          <ArrowLeft className="size-4" />
-          Voltar para o dashboard
-        </Link>
-
-        <GoogleMapsBanner />
-
-        <MetricsDashboard />
-
-        <HistoricoBuscas />
-
-        <div className="flex flex-wrap items-center justify-between gap-2">
+          <a href={urlExportarCsv(filtros)}>
+            <Download className="size-3.5" />
+            <span className="hidden sm:inline">Exportar CSV</span>
+          </a>
+        </Button>
+      }
+    >
+      <div className="w-full space-y-4">
+        {/* Barra de Filtros e Busca Rápida */}
+        <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-white/[0.06] bg-[#12131a] p-3 shadow-lg">
           <LeadFilterBar
             filtros={filtros}
             setFiltros={setFiltros}
@@ -85,41 +61,35 @@ export function LeadsMapsPage() {
             onLimpar={limpar}
             buscaInputRef={buscaInputRef}
           />
-          <Button variant="outline" size="sm" asChild>
-            <a href={urlExportarCsv(filtros)}>
-              <Download className="size-4" />
-              <span className="hidden sm:inline">Exportar CSV</span>
-            </a>
-          </Button>
         </div>
 
+        {/* Quadro Kanban e Lista de Leads */}
         <LeadGrid
           filtros={filtros}
           filtrosEmUso={filtrosEmUso}
           onLimparFiltros={limpar}
           onSelecionarLead={(lead) => setPlaceIdSelecionado(lead.place_id)}
-          onNovaBusca={() => setModalBuscaAberto(true)}
+          onAbrirPrimeiroContato={(lead) => setLeadPrimeiroContato(lead)}
         />
-      </main>
+      </div>
 
-      <LeadDetailModal
+      {/* Slide-Over Drawer de Detalhes do Lead */}
+      <LeadDetailDrawer
         lead={leadSelecionado}
-        onClose={() => setPlaceIdSelecionado(null)}
+        aberto={Boolean(leadSelecionado)}
+        onFechar={() => setPlaceIdSelecionado(null)}
+        onAbrirPrimeiroContato={(lead) => {
+          setPlaceIdSelecionado(null)
+          setLeadPrimeiroContato(lead)
+        }}
       />
 
-      <NovaBuscaModal
-        aberto={modalBuscaAberto && !buscaMinimizada}
-        onFechar={() => setModalBuscaAberto(false)}
-        onMinimizar={() => setBuscaMinimizada(true)}
-        busca={busca}
+      {/* Modal de Abordagem / Primeiro Contato com os 5 Frameworks */}
+      <ModalPrimeiroContato
+        lead={leadPrimeiroContato}
+        aberto={Boolean(leadPrimeiroContato)}
+        onFechar={() => setLeadPrimeiroContato(null)}
       />
-
-      {buscaMinimizada && busca.statusBusca.data && (
-        <BuscaFloatingIndicator
-          mensagem={busca.statusBusca.data.mensagem}
-          onClick={() => setBuscaMinimizada(false)}
-        />
-      )}
-    </div>
+    </AppLayout>
   )
 }

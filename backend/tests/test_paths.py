@@ -65,7 +65,7 @@ class TestModoEmpacotado:
             recarregado = importlib.reload(paths)
             assert recarregado.EMPACOTADO is True
             assert recarregado.DIR_RECURSOS == tmp_path / "bundle"
-            assert recarregado.DIR_DADOS == tmp_path / "appdata" / "ProspectOS"
+            assert recarregado.DIR_DADOS == tmp_path / "appdata" / "CadeWeb"
             # a separação é o que garante que um update não apaga os leads
             assert recarregado.DIR_RECURSOS != recarregado.DIR_DADOS
         finally:
@@ -73,7 +73,7 @@ class TestModoEmpacotado:
             importlib.reload(paths)  # restaura o módulo pro modo fonte
 
     def test_estado_restaurado_apos_o_teste_anterior(self):
-        # sanidade: o reload do finally devolveu o módulo ao modo fonte
+        # sanidade: o reload do final devolveu o módulo ao modo fonte
         assert paths.EMPACOTADO is False
 
 
@@ -106,7 +106,7 @@ class TestEscolherPorta:
 def cliente_com_dist(tmp_path, monkeypatch):
     dist = tmp_path / "dist"
     dist.mkdir()
-    (dist / "index.html").write_text("<html><body>ProspectOS</body></html>", encoding="utf-8")
+    (dist / "index.html").write_text("<html><body>CadêWeb</body></html>", encoding="utf-8")
     (dist / "assets").mkdir()
     (dist / "assets" / "app.js").write_text("console.log('oi')", encoding="utf-8")
     monkeypatch.setattr(app_module, "DIR_FRONTEND_DIST", dist)
@@ -119,7 +119,7 @@ class TestServirFrontend:
     def test_raiz_devolve_index(self, cliente_com_dist):
         resposta = cliente_com_dist.get("/")
         assert resposta.status_code == 200
-        assert b"ProspectOS" in resposta.data
+        assert "CadêWeb".encode("utf-8") in resposta.data
 
     def test_arquivo_estatico_e_servido(self, cliente_com_dist):
         resposta = cliente_com_dist.get("/assets/app.js")
@@ -130,12 +130,12 @@ class TestServirFrontend:
         # rota do React Router (não existe como arquivo) deve devolver o index
         resposta = cliente_com_dist.get("/tarefas")
         assert resposta.status_code == 200
-        assert b"ProspectOS" in resposta.data
+        assert "CadêWeb".encode("utf-8") in resposta.data
 
     def test_api_inexistente_da_404_e_nao_html(self, cliente_com_dist):
         resposta = cliente_com_dist.get("/api/rota-que-nao-existe")
         assert resposta.status_code == 404
-        assert b"ProspectOS" not in resposta.data
+        assert "CadêWeb".encode("utf-8") not in resposta.data
 
     def test_sem_dist_da_404_amigavel(self, tmp_path, monkeypatch):
         monkeypatch.setattr(app_module, "DIR_FRONTEND_DIST", tmp_path / "nao-existe")

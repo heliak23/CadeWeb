@@ -1,8 +1,8 @@
 import { useEffect } from "react"
 
 interface AtalhosTecladoOptions {
-  onFocarBusca: () => void
-  onNovaBusca: () => void
+  onFocarBusca?: () => void
+  onNovaBusca?: () => void
 }
 
 function estaDigitando(alvo: EventTarget | null): boolean {
@@ -19,19 +19,19 @@ export function useAtalhosTeclado({
     function handler(e: KeyboardEvent) {
       const jaDigitando = estaDigitando(e.target)
 
-      if (e.key === "/" && !jaDigitando) {
+      if (e.key === "/" && !jaDigitando && onFocarBusca) {
         e.preventDefault()
         onFocarBusca()
         return
       }
 
-      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k" && onFocarBusca) {
         e.preventDefault()
         onFocarBusca()
         return
       }
 
-      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "b" && !jaDigitando) {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "b" && !jaDigitando && onNovaBusca) {
         e.preventDefault()
         onNovaBusca()
       }

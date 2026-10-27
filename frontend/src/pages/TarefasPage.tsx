@@ -1,7 +1,7 @@
 import { ArrowLeft, Check, Copy, Flame, ListTodo, MapPin, MessageCircle, PartyPopper } from "lucide-react"
 import { Link } from "react-router-dom"
 import { toast } from "sonner"
-import { Header } from "@/components/layout/Header"
+import { AppLayout } from "@/components/layout/AppLayout"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
@@ -163,14 +163,13 @@ export function TarefasPage() {
 
   if (tarefas.isLoading) {
     return (
-      <div className="min-h-screen bg-background text-foreground">
-        <Header />
-        <main className="mx-auto w-full max-w-4xl space-y-3 px-4 py-6 sm:px-6">
+      <AppLayout breadcrumb="Tarefas de hoje">
+        <div className="mx-auto w-full max-w-4xl space-y-3">
           {Array.from({ length: 4 }).map((_, i) => (
             <Skeleton key={i} className="h-[64px]" />
           ))}
-        </main>
-      </div>
+        </div>
+      </AppLayout>
     )
   }
 
@@ -178,10 +177,8 @@ export function TarefasPage() {
   const novosQuentes = tarefas.data?.novos_quentes ?? []
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
-      <Header />
-
-      <main className="mx-auto w-full max-w-4xl space-y-6 px-4 py-6 sm:px-6">
+    <AppLayout breadcrumb="Tarefas de hoje">
+      <div className="mx-auto w-full max-w-4xl space-y-6">
         <Link
           to="/"
           className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground"
@@ -254,7 +251,7 @@ export function TarefasPage() {
             ))
           )}
         </section>
-      </main>
-    </div>
+      </div>
+    </AppLayout>
   )
 }

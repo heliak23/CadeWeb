@@ -1,13 +1,79 @@
+# Logs e arquivos de execução
 logs/
 *.log
-.DS_Store
-# proteção extra: nenhum .env em nenhuma pasta deve entrar no repositório
-.env
-# artefatos de ferramentas de navegador/screenshot usados no desenvolvimento
-.playwright-mcp/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
 
-# nota da release (rascunho local, nao versionar)
+# Variáveis de ambiente e segredos (NUNCA versionar)
+.env
+.env.*
+!.env.example
+
+# Bancos de dados e dados locais do usuário
+*.db
+*.db-*
+*.sqlite
+*.sqlite3
+leads.db
+leads.db-*
+saidas/
+backups/
+backups_manuais/
+queries.txt
+porta.txt
+teste*.csv
+teste*.json
+
+# Sessões e scraping temporário
+instagram/sessao/
+instagram/comentarios/
+backend/instagram/sessao/
+backend/instagram/comentarios/
+
+# Binários pesados e ferramentas externas
+*.exe
+!instalador/*.exe.keep
+google-maps-scraper.exe
+backend/google-maps-scraper.exe
+backend/node/
+instalador/saida/
+desktop/saida/
+
+# Node & Dependências Frontend / Desktop
+node_modules/
+**/node_modules/
+dist/
+**/dist/
+dist-ssr/
+build/
+**/build/
+
+# Python & Caches
+__pycache__/
+**/__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+**/.pytest_cache/
+.venv/
+venv/
+ENV/
+
+# IDEs e Sistema Operacional
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/*
+!.vscode/extensions.json
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Ferramentas de desenvolvimento / notas locais
+.playwright-mcp/
 release-*.md
 
-# saida compilada do instalador (85MB+, gerada por iscc)
-instalador/saida/

@@ -45,9 +45,9 @@ export function Header({ onNovaBusca, onVerIgnorados }: HeaderProps) {
     <header className="sticky top-0 z-20 border-b border-border/60 bg-background/80 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="mx-auto flex w-full max-w-6xl items-center justify-between gap-3 px-4 py-3 sm:px-6">
         <Link to="/" className="flex items-center gap-2">
-          <img src="/logo-icon.svg" alt="ProspectOS" className="size-9" />
-          <h1 className="text-lg font-semibold tracking-tight sm:text-xl">
-            ProspectOS
+          <img src="/cadeweb-icon.png" alt="CadêWeb" className="size-9 rounded-lg" />
+          <h1 className="text-lg font-bold tracking-tight sm:text-xl">
+            CadêWeb
           </h1>
         </Link>
 

@@ -36,13 +36,20 @@ CHAVES_CONFIG_VALIDAS = {
 # (Windows Credential Manager, via keyring/DPAPI), nunca em plaintext no
 # leads.db - o banco entra nos backups automáticos, o cofre não.
 CHAVES_SECRETAS = set(CHAVES_CONFIG_VALIDAS)
-_SERVICO_KEYRING = "ProspectOS"
+_SERVICO_KEYRING = "CadeWeb"
+_SERVICO_KEYRING_LEGADO = "ProspectOS"
 
 
 def _keyring_obter(chave):
     try:
         import keyring
-        return keyring.get_password(_SERVICO_KEYRING, chave)
+        val = keyring.get_password(_SERVICO_KEYRING, chave)
+        if not val:
+            val_legado = keyring.get_password(_SERVICO_KEYRING_LEGADO, chave)
+            if val_legado:
+                keyring.set_password(_SERVICO_KEYRING, chave, val_legado)
+                return val_legado
+        return val
     except Exception:
         logger.debug("keyring indisponível ao ler a chave %s", chave)
         return None

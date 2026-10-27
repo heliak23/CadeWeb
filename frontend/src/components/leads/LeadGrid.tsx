@@ -31,6 +31,7 @@ interface LeadGridProps {
   onLimparFiltros: () => void
   onSelecionarLead: (lead: Lead) => void
   onNovaBusca?: () => void
+  onAbrirPrimeiroContato?: (lead: Lead) => void
 }
 
 export function LeadGrid({
@@ -39,8 +40,9 @@ export function LeadGrid({
   onLimparFiltros,
   onSelecionarLead,
   onNovaBusca,
+  onAbrirPrimeiroContato,
 }: LeadGridProps) {
-  const [visualizacao, setVisualizacao] = useState<"lista" | "kanban">("lista")
+  const [visualizacao, setVisualizacao] = useState<"lista" | "kanban">("kanban")
 
   const filtrosEfetivos: FiltrosLeads =
     visualizacao === "kanban" ? { ...filtros, status: "" } : filtros
@@ -80,7 +82,7 @@ export function LeadGrid({
   }
 
   const leadsForaDoFunil = leads.filter((l) =>
-    ["recusou", "ignorado"].includes(l.status)
+    l.status === "ignorado"
   ).length
 
   return (
@@ -89,24 +91,34 @@ export function LeadGrid({
         <p className="text-sm text-muted-foreground">
           {leads.length} lead(s) carregado(s)
         </p>
-        <div className="flex items-center gap-1 rounded-lg border border-border p-0.5">
+        <div className="flex items-center gap-1 rounded-xl border border-white/10 bg-white/[0.03] p-1">
           <Button
             variant="ghost"
             size="sm"
-            className={cn("h-7 px-2", visualizacao === "lista" && "bg-accent")}
-            onClick={() => setVisualizacao("lista")}
+            className={cn(
+              "h-7 px-3 text-xs font-semibold rounded-lg transition-all",
+              visualizacao === "kanban"
+                ? "bg-violet-600 text-white shadow-md shadow-violet-600/30 font-bold"
+                : "text-muted-foreground hover:text-white"
+            )}
+            onClick={() => setVisualizacao("kanban")}
           >
-            <List className="size-3.5" />
-            Lista
+            <LayoutGrid className="size-3.5 mr-1" />
+            Kanban
           </Button>
           <Button
             variant="ghost"
             size="sm"
-            className={cn("h-7 px-2", visualizacao === "kanban" && "bg-accent")}
-            onClick={() => setVisualizacao("kanban")}
+            className={cn(
+              "h-7 px-3 text-xs font-semibold rounded-lg transition-all",
+              visualizacao === "lista"
+                ? "bg-violet-600 text-white shadow-md shadow-violet-600/30 font-bold"
+                : "text-muted-foreground hover:text-white"
+            )}
+            onClick={() => setVisualizacao("lista")}
           >
-            <LayoutGrid className="size-3.5" />
-            Kanban
+            <List className="size-3.5 mr-1" />
+            Lista
           </Button>
         </div>
 
@@ -153,12 +165,16 @@ export function LeadGrid({
 
       {visualizacao === "kanban" ? (
         <>
-          <div className="relative left-1/2 right-1/2 -mx-[50vw] w-screen px-4 sm:px-6">
-            <KanbanBoard leads={leads} onSelecionarLead={onSelecionarLead} />
+          <div className="w-full">
+            <KanbanBoard
+              leads={leads}
+              onSelecionarLead={onSelecionarLead}
+              onAbrirPrimeiroContato={onAbrirPrimeiroContato}
+            />
           </div>
           {leadsForaDoFunil > 0 && (
             <p className="mt-2 text-xs text-muted-foreground">
-              {leadsForaDoFunil} lead(s) recusado(s)/ignorado(s) não aparecem
+              {leadsForaDoFunil} lead(s) ignorado(s) não aparecem
               no Kanban — use a visualização em Lista para vê-los.
             </p>
           )}

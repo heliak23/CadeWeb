@@ -7,7 +7,7 @@ Dois modos de execução:
 - **Empacotado** (PyInstaller, `sys.frozen`): o código e os recursos viram um bundle
   read-only (possivelmente em Program Files), então os dados do usuário (banco,
   backups, saídas, sessão do Instagram) PRECISAM ir para uma pasta gravável —
-  `%APPDATA%\\ProspectOS`. Sem essa separação, o app instalado não consegue gravar
+  `%APPDATA%\\CadeWeb`. Sem essa separação, o app instalado não consegue gravar
   nada e um update apagaria os leads.
 
 Regra prática para os outros módulos:
@@ -30,7 +30,15 @@ if EMPACOTADO:
     # --onedir: recursos adicionados via --add-data ficam em sys._MEIPASS
     # (na prática a pasta _internal ao lado do .exe)
     DIR_RECURSOS = Path(getattr(sys, "_MEIPASS", Path(sys.executable).parent))
-    DIR_DADOS = Path(os.environ.get("APPDATA", str(Path.home()))) / "ProspectOS"
+    _appdata = Path(os.environ.get("APPDATA", str(Path.home())))
+    _pasta_nova = _appdata / "CadeWeb"
+    _pasta_legada = _appdata / "ProspectOS"
+    if not _pasta_nova.exists() and _pasta_legada.exists():
+        try:
+            _pasta_legada.rename(_pasta_nova)
+        except Exception:
+            pass
+    DIR_DADOS = _pasta_nova if _pasta_nova.exists() or not _pasta_legada.exists() else _pasta_legada
 else:
     DIR_RECURSOS = _DIR_FONTE
     DIR_DADOS = _DIR_FONTE

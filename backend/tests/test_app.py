@@ -477,6 +477,7 @@ class TestAnalytics:
             {"status": "novo", "total": 0},
             {"status": "contatado", "total": 0},
             {"status": "respondeu", "total": 0},
+            {"status": "reuniao", "total": 0},
             {"status": "fechou", "total": 0},
         ]
 

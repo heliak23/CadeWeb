@@ -1,8 +1,8 @@
 # -*- mode: python ; coding: utf-8 -*-
-"""Build do backend empacotado do ProspectOS (PyInstaller, --onedir).
+"""Build do backend empacotado do CadêWeb (PyInstaller, --onedir).
 
 Uso:
-    py -m PyInstaller prospectos.spec
+    py -m PyInstaller cadeweb.spec
 
 Pré-requisitos na pasta backend/:
     - google-maps-scraper.exe (o binário do scraper)
@@ -13,7 +13,7 @@ Pré-requisitos na pasta backend/:
 Decisões:
     - onedir (não onefile): startup rápido, sem reextrair ~200MB a cada abertura,
       e é o formato que o instalador (Inno Setup) e o shell Electron esperam.
-    - console configurável: PROSPECTOS_BUILD_CONSOLE=1 gera um .exe com console
+    - console configurável: CADEWEB_BUILD_CONSOLE=1 gera um .exe com console
       (útil pra depurar o bundle); o padrão é janela nenhuma (app "de verdade").
     - hiddenimports: keyring.backends.Windows é OBRIGATÓRIO - sem ele o keyring
       não acha o backend do Windows e as chaves de API cairiam em plaintext no
@@ -60,13 +60,13 @@ exe = EXE(
     a.scripts,
     [],
     exclude_binaries=True,
-    name="ProspectOS",
+    name="CadeWeb",
     debug=False,
     bootloader_ignore_signals=False,
     strip=False,
     upx=False,
-    console=os.environ.get("PROSPECTOS_BUILD_CONSOLE") == "1",
-    icon=str(RAIZ / "prospectos.ico") if (RAIZ / "prospectos.ico").exists() else None,
+    console=os.environ.get("CADEWEB_BUILD_CONSOLE") == "1" or os.environ.get("PROSPECTOS_BUILD_CONSOLE") == "1",
+    icon=str(RAIZ / "cadeweb.ico") if (RAIZ / "cadeweb.ico").exists() else None,
 )
 
 coll = COLLECT(
@@ -75,5 +75,5 @@ coll = COLLECT(
     a.datas,
     strip=False,
     upx=False,
-    name="ProspectOS",
+    name="CadeWeb",
 )
