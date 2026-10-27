@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { instagramService } from "@/services/instagramService"
 import { tocarSom } from "@/hooks/useSom"
@@ -10,12 +10,19 @@ export function useAnaliseInstagram() {
   const [resultadoFinal, setResultadoFinal] = useState<EstadoAnaliseInstagram | null>(
     null
   )
+  const viuRodandoRef = useRef(false)
 
   const aoDisparar = () => {
     setResultadoFinal(null)
-    // descarta o status cacheado da análise anterior (rodando:false) - senão o
-    // effect veria !rodando e concluiria na hora com o resultado antigo
-    queryClient.removeQueries({ queryKey: ["instagram-status"] })
+    viuRodandoRef.current = false
+    queryClient.setQueryData<EstadoAnaliseInstagram>(["instagram-status"], {
+      rodando: true,
+      etapa: "",
+      mensagem: "Iniciando análise...",
+      perfis_encontrados: 0,
+      perfis_processados: 0,
+      post_id: null,
+    })
     setPoll(true)
   }
 
@@ -39,15 +46,25 @@ export function useAnaliseInstagram() {
   })
 
   useEffect(() => {
-    if (poll && statusAnalise.data && !statusAnalise.data.rodando) {
+    if (!poll || !statusAnalise.data) return
+
+    if (statusAnalise.data.rodando) {
+      viuRodandoRef.current = true
+      return
+    }
+
+    if (viuRodandoRef.current && !statusAnalise.data.rodando) {
       setPoll(false)
+      viuRodandoRef.current = false
       setResultadoFinal(statusAnalise.data)
       queryClient.invalidateQueries({ queryKey: ["instagram-posts"] })
       tocarSom("analise-instagram-concluida")
     }
   }, [poll, statusAnalise.data, queryClient])
 
-  const limparResultado = () => setResultadoFinal(null)
+  const limparResultado = useCallback(() => {
+    setResultadoFinal(null)
+  }, [])
 
   return {
     dispararAnalise,

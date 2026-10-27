@@ -14,6 +14,7 @@ import { BuscaProgress } from "@/components/search-modal/BuscaProgress"
 import { BuscaResultado } from "@/components/search-modal/BuscaResultado"
 import { MapaSeletorAreas } from "@/components/search-modal/MapaSeletorAreas"
 import { SeletorNichos } from "@/components/search-modal/SeletorNichos"
+import { useInvalidarLeads } from "@/hooks/useInvalidarLeads"
 import type { useBusca } from "@/hooks/useBusca"
 import type { AreaBusca } from "@/types/busca"
 
@@ -32,6 +33,7 @@ export function NovaBuscaModal({
   onMinimizar,
   busca,
 }: NovaBuscaModalProps) {
+  const invalidarListaEMetricas = useInvalidarLeads()
   const [modo, setModo] = useState<ModoBusca>("texto")
   const [queries, setQueries] = useState("")
   const [nichos, setNichos] = useState<string[]>([])
@@ -65,6 +67,7 @@ export function NovaBuscaModal({
 
   const handleFechar = () => {
     limparResultado()
+    invalidarListaEMetricas()
     onFechar()
   }
 

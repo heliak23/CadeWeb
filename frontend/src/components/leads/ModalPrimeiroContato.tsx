@@ -174,7 +174,7 @@ export function ModalPrimeiroContato({
 
   return (
     <Dialog open={aberto} onOpenChange={(open) => !open && onFechar()}>
-      <DialogContent className="max-h-[92vh] max-w-4xl overflow-y-auto border-border bg-card p-0 text-foreground shadow-2xl">
+      <DialogContent className="max-h-[92vh] w-full max-w-[calc(100%-2rem)] overflow-y-auto border-border bg-card p-0 text-foreground shadow-2xl sm:max-w-4xl lg:max-w-5xl">
         <DialogHeader className="border-b border-border px-6 py-4">
           <DialogTitle className="text-lg font-bold text-foreground flex items-center gap-2">
             <span>Primeiro contato</span>

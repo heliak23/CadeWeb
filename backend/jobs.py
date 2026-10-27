@@ -162,6 +162,12 @@ def tentar_reservar_busca():
         if estado_busca["rodando"]:
             return False
         estado_busca["rodando"] = True
+        estado_busca["mensagem"] = "Iniciando busca..."
+        estado_busca["etapa"] = ""
+        estado_busca["empresas_encontradas"] = 0
+        estado_busca["empresas_processadas"] = 0
+        estado_busca["area_atual"] = 0
+        estado_busca["total_areas"] = 0
         return True
 
 
@@ -174,6 +180,11 @@ def tentar_reservar_analise_instagram():
         if estado_instagram["rodando"]:
             return False
         estado_instagram["rodando"] = True
+        estado_instagram["mensagem"] = "Iniciando análise..."
+        estado_instagram["etapa"] = ""
+        estado_instagram["perfis_encontrados"] = 0
+        estado_instagram["perfis_processados"] = 0
+        estado_instagram["post_id"] = None
         return True
 
 

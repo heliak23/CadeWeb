@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { buscaService } from "@/services/buscaService"
 import { useInvalidarLeads } from "@/hooks/useInvalidarLeads"
@@ -11,13 +11,23 @@ export function useBusca() {
   const invalidarListaEMetricas = useInvalidarLeads()
   const [poll, setPoll] = useState(false)
   const [resultadoFinal, setResultadoFinal] = useState<EstadoBusca | null>(null)
+  // Guarda se o polling já observou o backend em execução (rodando: true) nesta busca.
+  // Isso impede que um estado residual cacheado (rodando: false) finalize a busca prematuramente.
+  const viuRodandoRef = useRef(false)
 
   const aoDisparar = () => {
     setResultadoFinal(null)
-    // remove o status cacheado da busca ANTERIOR (rodando:false) - senão o
-    // effect abaixo veria !rodando e dispararia "conclusão" instantânea com o
-    // resultado antigo antes desta busca começar
-    queryClient.removeQueries({ queryKey: ["busca-status"] })
+    viuRodandoRef.current = false
+    // Define explicitamente o estado inicial como rodando, sobrescrevendo qualquer cache anterior
+    queryClient.setQueryData<EstadoBusca>(["busca-status"], {
+      rodando: true,
+      etapa: "",
+      mensagem: "Iniciando busca...",
+      empresas_encontradas: 0,
+      empresas_processadas: 0,
+      area_atual: 0,
+      total_areas: 0,
+    })
     setPoll(true)
     pedirPermissaoNotificacao()
   }
@@ -42,8 +52,17 @@ export function useBusca() {
   })
 
   useEffect(() => {
-    if (poll && statusBusca.data && !statusBusca.data.rodando) {
+    if (!poll || !statusBusca.data) return
+
+    if (statusBusca.data.rodando) {
+      viuRodandoRef.current = true
+      return
+    }
+
+    // Só finaliza quando a busca de fato começou e terminou (rodando: false após ter rodado)
+    if (viuRodandoRef.current && !statusBusca.data.rodando) {
       setPoll(false)
+      viuRodandoRef.current = false
       setResultadoFinal(statusBusca.data)
       queryClient.invalidateQueries({ queryKey: ["nichos"] })
       invalidarListaEMetricas()
@@ -52,7 +71,9 @@ export function useBusca() {
     }
   }, [poll, statusBusca.data, queryClient, invalidarListaEMetricas])
 
-  const limparResultado = () => setResultadoFinal(null)
+  const limparResultado = useCallback(() => {
+    setResultadoFinal(null)
+  }, [])
 
   return {
     dispararBusca,

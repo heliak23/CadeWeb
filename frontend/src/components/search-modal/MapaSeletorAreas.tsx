@@ -270,9 +270,9 @@ export function MapaSeletorAreas({
           </div>
           {resultadosLocal.length > 0 && (
             <div className="absolute inset-x-0 top-full z-[1100] mt-1 overflow-hidden rounded-lg border border-border bg-popover shadow-md">
-              {resultadosLocal.map((local) => (
+              {resultadosLocal.map((local, idx) => (
                 <button
-                  key={`${local.lat}-${local.lng}`}
+                  key={`${local.lat}-${local.lng}-${idx}`}
                   type="button"
                   onClick={() => irParaLocal(local)}
                   className="flex w-full items-center gap-2 px-3 py-2 text-left text-sm hover:bg-accent"
