@@ -26,9 +26,7 @@ let backendEncerradoDeProposito = false;
 let atualizacaoBaixada = false;
 let portaBackend = null; // preenchida quando o sidecar anuncia a porta
 
-const ICONE = fs.existsSync(path.join(__dirname, "cadeweb.ico"))
-  ? path.join(__dirname, "cadeweb.ico")
-  : path.join(__dirname, "prospectos.ico");
+const ICONE = path.join(__dirname, "cadeweb.ico");
 
 // só uma instância do app por vez (a segunda só foca a janela da primeira)
 const primeiraInstancia = app.requestSingleInstanceLock();

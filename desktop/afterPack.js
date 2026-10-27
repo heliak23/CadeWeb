@@ -17,9 +17,7 @@ module.exports = async function aposEmpacotar(contexto) {
   }
   const versao = contexto.packager.appInfo.version;
 
-  const iconePath = fs.existsSync(path.join(__dirname, "cadeweb.ico"))
-    ? path.join(__dirname, "cadeweb.ico")
-    : path.join(__dirname, "prospectos.ico");
+  const iconePath = path.join(__dirname, "cadeweb.ico");
 
   await rcedit(exe, {
     icon: iconePath,

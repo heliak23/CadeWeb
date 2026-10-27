@@ -42,10 +42,8 @@ export function LeadDetailDrawer({
   const mutations = useLeadMutations(lead?.place_id ?? "")
 
   useEffect(() => {
-    if (lead) {
-      setNotaTexto(lead.observacoes || "")
-    }
-  }, [lead?.place_id, lead?.observacoes])
+    setNotaTexto(lead?.observacoes || "")
+  }, [lead])
 
   // Fecha com ESC
   useEffect(() => {

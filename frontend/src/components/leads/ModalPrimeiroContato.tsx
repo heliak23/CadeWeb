@@ -116,7 +116,7 @@ export function ModalPrimeiroContato({
         })
       )
     }
-  }, [lead, perfil])
+  }, [lead, perfil, frameworkId])
 
   const trocarFramework = (novoId: string) => {
     setFrameworkId(novoId)
